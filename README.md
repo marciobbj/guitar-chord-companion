@@ -4,6 +4,8 @@ Chord Finder é uma ferramenta de teoria musical "tudo-em-um" para guitarristas.
 
 Este aplicativo é totalmente autossuficiente e funciona em um único arquivo .html, combinando um metrônomo preciso com utilitários avançados de acordes, escalas e harmonia.
 
+![screen shot](imgs/screenshot_1.png "Screen Shot")
+
 ## Funcionalidades
 
 O aplicativo é dividido em um cabeçalho global (Metrônomo) e três abas principais.
