@@ -1,14 +1,14 @@
-Chord Finder
+## Chord Finder
 
 Chord Finder é uma ferramenta de teoria musical "tudo-em-um" para guitarristas.
 
 Este aplicativo é totalmente autossuficiente e funciona em um único arquivo .html, combinando um metrônomo preciso com utilitários avançados de acordes, escalas e harmonia.
 
-Funcionalidades
+## Funcionalidades
 
 O aplicativo é dividido em um cabeçalho global (Metrônomo) e três abas principais.
 
-1. Metrônomo (Global)
+### Metrônomo (Global)
 
 O cabeçalho do aplicativo é um metrônomo funcional que persiste em todas as abas:
 
@@ -20,7 +20,7 @@ Controles: Botão "START/STOP" e um "blip" visual que pisca no tempo.
 
 Batida Acentuada: O "tick" da batida "1" é mais alto e o "blip" visual fica azul, ajudando a manter a contagem do compasso (4/4).
 
-2. Aba: CHORD ID (Identificador de Acordes)
+### Aba CHORD ID (Identificador de Acordes)
 
 Esta aba permite que você identifique qualquer acorde tocado no braço da guitarra.
 
@@ -40,7 +40,7 @@ Detecção de Baixo (Inversões): Identifica corretamente acordes com inversão,
 
 Lógica de Ambiguidade: Prioriza a interpretação onde a tônica é o baixo (ex: as notas "G" e "D" são identificadas como G5 e não D(Perfect 4th) se G for a nota mais grave).
 
-3. Aba: SCALES (Escalas)
+### 3. Aba: SCALES (Escalas)
 
 Um visualizador de escalas para estudar padrões no braço da guitarra.
 
@@ -50,7 +50,7 @@ Mapa de Notas: O braço da guitarra ilumina todas as notas pertencentes àquela 
 
 Destaque da Tônica: Todas as tônicas (notas "C#") são destacadas em azul para fácil visualização dos pontos de ancoragem.
 
-4. Aba: HARMONY (Campos Harmônicos)
+### Aba: HARMONY (Campos Harmônicos)
 
 Uma ferramenta poderosa para analisar a estrutura harmônica e encontrar inversões de acordes.
 
@@ -66,7 +66,7 @@ As notas são rotuladas com seus intervalos (ex: R, 3, 5, b7).
 
 Guia de Inversões: Uma seção de ajuda explica como usar esse "mapa de intervalos" para construir qualquer inversão do acorde (Estado Fundamental, 1ª, 2ª ou 3ª inversão).
 
-Tecnologias Utilizadas
+### Tecnologias Utilizadas
 
 HTML5
 
@@ -76,6 +76,6 @@ JavaScript (Puro/Vanilla) (para toda a lógica de teoria musical, abas e interat
 
 Web Audio API (para o metrônomo)
 
-Como Executar
+### Como Executar
 
 Este projeto é um único arquivo .html. Basta salvar o arquivo chord_identifier.html e abri-lo em qualquer navegador moderno.
