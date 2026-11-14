@@ -229,15 +229,46 @@
                 </div>
             </div>
 
+            <!-- Selected Harmony Chord Status & Display Toggle -->
+            <div class="max-w-4xl mx-auto mb-6">
+                <div class="bg-white border-4 border-black neo-shadow p-4 sm:p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div class="text-center sm:text-left">
+                        <div class="text-xs font-bold text-gray-500 uppercase tracking-wider">SELECTED CHORD</div>
+                        <div id="harmony-selected-title" class="text-2xl sm:text-3xl font-black text-blue-500">---</div>
+                        <div id="harmony-selected-notes" class="text-xs sm:text-sm font-bold text-gray-700 mt-0.5">Select a chord above to map its notes and intervals</div>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <button id="harmony-mode-intervals" class="px-3 py-2 text-xs sm:text-sm font-black border-4 border-black bg-blue-400 text-black neo-shadow-sm transition-all">
+                            INTERVALS (R, 3, 5)
+                        </button>
+                        <button id="harmony-mode-notes" class="px-3 py-2 text-xs sm:text-sm font-black border-4 border-black bg-zinc-200 text-black neo-shadow-sm transition-all">
+                            NOTES (C, E, G)
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fretboard Container -->
+            <div class="bg-white border-4 border-black neo-shadow overflow-hidden mb-6">
+                <div id="fretboard-wrapper-harmony" class="overflow-x-auto pb-8">
+                    <div id="fretboard-container-harmony" class="pt-4">
+                        <!-- Fretboard será gerado aqui -->
+                    </div>
+                    <div id="fret-numbers-container-harmony">
+                        <!-- Números dos trastes serão gerados aqui -->
+                    </div>
+                </div>
+            </div>
+
             <!-- Inversion Help Section -->
             <div class="max-w-4xl mx-auto mb-6">
                 <div class="bg-white border-4 border-black neo-shadow p-4 sm:p-6 md:p-8">
                     <h3 class="text-xl md:text-2xl font-black text-blue-500 mb-3 md:mb-4">COMO LER O BRAÇO (INVERSÕES)</h3>
                     <p class="text-gray-700 text-sm sm:text-base md:text-lg mb-3">
-                        Quando você seleciona um acorde (ex: "V7"), o braço da guitarra abaixo não mostra apenas *um* shape, ele mostra **todas as notas** desse acorde em **todo o braço**.
+                        Quando você seleciona um acorde (ex: "V7"), o braço da guitarra acima mostra **todas as notas** desse acorde em **todo o braço**.
                     </p>
                     <p class="text-gray-700 text-sm sm:text-base md:text-lg mb-3">
-                        Cada nota é marcada com seu **intervalo** em relação à tônica (R, 3, 5, b7, etc.).
+                        Na coluna **OPEN** (corda solta), as cordas sempre mantêm sua afinação visível (ex: `E · R` ou `A · 5`) e ficam destacadas em azul (Tônica) ou amarelo (Nota do acorde) quando fazem parte do acorde selecionado.
                     </p>
                     <p class="text-gray-700 text-sm sm:text-base md:text-lg font-bold mb-3">
                         Uma inversão é simplesmente o mesmo acorde, mas com uma nota que não é a Tônica (R) como a nota mais grave (o baixo).
@@ -248,21 +279,6 @@
                         <li><strong>2ª Inversão:</strong> A nota mais grave é a Quinta (<strong>5</strong> ou <strong>b5</strong>).</li>
                         <li><strong>3ª Inversão:</strong> A nota mais grave é a Sétima (<strong>7</strong> ou <strong>b7</strong>).</li>
                     </ul>
-                    <p class="text-gray-700 text-sm sm:text-base md:text-lg mt-4">
-                        Para encontrar qualquer inversão, basta olhar o mapa no braço e escolher a nota de intervalo desejada como seu novo baixo (geralmente na 6ª, 5ª ou 4ª corda).
-                    </p>
-                </div>
-            </div>
-
-            <!-- Fretboard Container -->
-            <div class="bg-white border-4 border-black neo-shadow overflow-hidden">
-                <div id="fretboard-wrapper-harmony" class="overflow-x-auto pb-8">
-                    <div id="fretboard-container-harmony" class="pt-4">
-                        <!-- Fretboard será gerado aqui -->
-                    </div>
-                    <div id="fret-numbers-container-harmony">
-                        <!-- Números dos trastes serão gerados aqui -->
-                    </div>
                 </div>
             </div>
 
@@ -855,9 +871,10 @@
                 scaleFretboardEl.querySelectorAll('.fret-button').forEach(btn => {
                     const noteIndex = parseInt(btn.dataset.noteIndex);
                     const noteName = btn.dataset.noteName;
+                    const isOpenString = btn.dataset.fret === '0';
                     
                     // Resetar classes e texto
-                    btn.classList.remove('scale-root', 'scale-note');
+                    btn.classList.remove('scale-root', 'scale-note', 'open-muted');
                     btn.textContent = ''; // Limpa TUDO
 
                     // Aplicar classes da escala
@@ -868,11 +885,10 @@
                         } else {
                             btn.classList.add('scale-note');
                         }
-                    } else {
-                         // Se a nota não está na escala, mas é corda solta, mostre o nome
-                        if (btn.dataset.fret === '0') {
-                            btn.textContent = noteName;
-                        }
+                    } else if (isOpenString) {
+                        // Se a nota não está na escala, mas é corda solta, mostre o nome discretamente
+                        btn.textContent = noteName;
+                        btn.classList.add('open-muted');
                     }
                 });
             }
@@ -889,8 +905,58 @@
             const harmonyResultsEl = document.getElementById('harmony-results');
             const harmonyFretboardEl = document.getElementById('fretboard-container-harmony');
             const harmonyNumbersEl = document.getElementById('fret-numbers-container-harmony');
+            const harmonySelectedTitleEl = document.getElementById('harmony-selected-title');
+            const harmonySelectedNotesEl = document.getElementById('harmony-selected-notes');
+            const harmonyModeIntervalsBtn = document.getElementById('harmony-mode-intervals');
+            const harmonyModeNotesBtn = document.getElementById('harmony-mode-notes');
             
             let currentHarmonyChord = null; // Armazena os dados do acorde clicado
+            let harmonyDisplayMode = 'intervals'; // 'intervals' | 'notes'
+
+            function setHarmonyDisplayMode(mode) {
+                harmonyDisplayMode = mode;
+                if (mode === 'intervals') {
+                    harmonyModeIntervalsBtn.classList.add('bg-blue-400');
+                    harmonyModeIntervalsBtn.classList.remove('bg-zinc-200');
+                    harmonyModeNotesBtn.classList.add('bg-zinc-200');
+                    harmonyModeNotesBtn.classList.remove('bg-blue-400');
+                } else {
+                    harmonyModeNotesBtn.classList.add('bg-blue-400');
+                    harmonyModeNotesBtn.classList.remove('bg-zinc-200');
+                    harmonyModeIntervalsBtn.classList.add('bg-zinc-200');
+                    harmonyModeIntervalsBtn.classList.remove('bg-blue-400');
+                }
+                drawNotesOnHarmonyFretboard();
+            }
+
+            harmonyModeIntervalsBtn.addEventListener('click', () => setHarmonyDisplayMode('intervals'));
+            harmonyModeNotesBtn.addEventListener('click', () => setHarmonyDisplayMode('notes'));
+
+            function selectHarmonyChord(buttonEl, chordData, chordRootIndex, chordRootName) {
+                harmonyResultsEl.querySelectorAll('button').forEach(btn => {
+                    btn.classList.remove('bg-blue-200');
+                });
+                buttonEl.classList.add('bg-blue-200');
+
+                const intervals = chordData.intervals.map(Number);
+                currentHarmonyChord = {
+                    degree: chordData.degree,
+                    quality: chordData.quality,
+                    rootName: chordRootName,
+                    rootIndex: chordRootIndex,
+                    intervals: intervals
+                };
+
+                const chordNoteDetails = intervals.map(i => {
+                    const noteIdx = (chordRootIndex + i) % 12;
+                    return `${NOTES[noteIdx]} (${INTERVAL_NAMES[i]})`;
+                }).join('  ·  ');
+
+                harmonySelectedTitleEl.textContent = `${chordData.degree} — ${chordRootName}${chordData.quality}`;
+                harmonySelectedNotesEl.textContent = chordNoteDetails;
+
+                drawNotesOnHarmonyFretboard();
+            }
 
             function drawHarmony() {
                 const rootName = harmonyRootEl.value;
@@ -901,19 +967,25 @@
                 if (!formula) return;
                 
                 harmonyResultsEl.innerHTML = ''; // Limpa resultados anteriores
+                let firstButton = null;
+                let firstChordArgs = null;
                 
-                formula.forEach(chordData => {
+                formula.forEach((chordData, idx) => {
                     const chordRootIndex = (rootIndex + chordData.rootInterval) % 12;
                     const chordRootName = NOTES[chordRootIndex];
+                    const chordNotesList = chordData.intervals
+                        .map(i => NOTES[(chordRootIndex + i) % 12])
+                        .join(', ');
                     
                     const el = document.createElement('button');
-                    el.className = 'w-full flex justify-between items-center p-4 md:p-6 hover:bg-zinc-100 transition-colors focus:outline-none focus:bg-blue-100';
+                    el.className = 'w-full flex justify-between items-center p-4 md:p-5 hover:bg-zinc-100 transition-colors focus:outline-none';
                     el.innerHTML = `
-                        <div class="flex items-baseline space-x-4">
-                            <span class="text-xl md:text-3xl font-black text-blue-500 w-16 text-right">${chordData.degree}</span>
-                            <span class="text-lg md:text-2xl font-bold">${chordRootName}${chordData.quality.replace('m', 'm').replace('maj', 'maj')}</span>
+                        <div class="flex items-baseline space-x-3 sm:space-x-4">
+                            <span class="text-xl md:text-3xl font-black text-blue-500 w-12 sm:w-16 text-right">${chordData.degree}</span>
+                            <span class="text-lg md:text-2xl font-black">${chordRootName}${chordData.quality}</span>
+                            <span class="hidden sm:inline-block text-xs md:text-sm font-bold text-gray-500">(${chordNotesList})</span>
                         </div>
-                        <span class="text-sm md:text-base text-gray-600">${chordData.quality}</span>
+                        <span class="text-xs sm:text-sm md:text-base font-bold px-2.5 py-1 bg-zinc-200 border-2 border-black">${chordData.quality}</span>
                     `;
                     
                     // Armazena os dados do acorde no botão
@@ -921,23 +993,24 @@
                     el.dataset.intervals = chordData.intervals.join(',');
                     
                     el.addEventListener('click', () => {
-                        // Remove o 'active' de outros botões
-                        harmonyResultsEl.querySelectorAll('button').forEach(btn => btn.classList.remove('bg-blue-200'));
-                        el.classList.add('bg-blue-200'); // Ativa o clicado
-                        
-                        currentHarmonyChord = {
-                            rootIndex: chordRootIndex,
-                            intervals: chordData.intervals.map(Number)
-                        };
-                        drawNotesOnHarmonyFretboard();
+                        selectHarmonyChord(el, chordData, chordRootIndex, chordRootName);
                     });
+
+                    if (idx === 0) {
+                        firstButton = el;
+                        firstChordArgs = [el, chordData, chordRootIndex, chordRootName];
+                    }
                     
                     harmonyResultsEl.appendChild(el);
                 });
                 
-                // Limpa o braço da harmonia se o campo harmônico mudar
-                currentHarmonyChord = null;
-                clearHarmonyFretboard();
+                // Seleciona automaticamente o primeiro grau (I / i) ao abrir ou trocar de tom
+                if (firstButton && firstChordArgs) {
+                    selectHarmonyChord(...firstChordArgs);
+                } else {
+                    currentHarmonyChord = null;
+                    clearHarmonyFretboard();
+                }
             }
             
             function drawNotesOnHarmonyFretboard() {
@@ -951,28 +1024,46 @@
                 
                 harmonyFretboardEl.querySelectorAll('.fret-button').forEach(btn => {
                     const noteIndex = parseInt(btn.dataset.noteIndex);
+                    const noteName = btn.dataset.noteName;
+                    const isOpenString = btn.dataset.fret === '0';
                     
                     // Resetar
-                    btn.classList.remove('harmony-root', 'harmony-note');
-                    btn.textContent = (btn.dataset.fret === '0') ? btn.dataset.noteName : '';
+                    btn.classList.remove('harmony-root', 'harmony-note', 'open-muted');
+                    btn.textContent = '';
 
                     if (chordNoteIndices.includes(noteIndex)) {
-                        // Encontra o intervalo
                         const interval = (noteIndex - rootIndex + 12) % 12;
-                        btn.textContent = INTERVAL_NAMES[interval];
+                        const intervalLabel = INTERVAL_NAMES[interval];
+
+                        if (isOpenString) {
+                            // Na corda solta, mantém o identificador da corda + intervalo (ou nota)
+                            btn.textContent = harmonyDisplayMode === 'intervals'
+                                ? `${noteName}·${intervalLabel}`
+                                : noteName;
+                        } else {
+                            btn.textContent = harmonyDisplayMode === 'intervals'
+                                ? intervalLabel
+                                : noteName;
+                        }
                         
                         if (noteIndex === rootIndex) {
                             btn.classList.add('harmony-root');
                         } else {
                             btn.classList.add('harmony-note');
                         }
+                    } else if (isOpenString) {
+                        // Corda solta que não faz parte do acorde fica discreta mas mantém a afinação legível
+                        btn.textContent = noteName;
+                        btn.classList.add('open-muted');
                     }
                 });
             }
             
             function clearHarmonyFretboard() {
+                if (harmonySelectedTitleEl) harmonySelectedTitleEl.textContent = '---';
+                if (harmonySelectedNotesEl) harmonySelectedNotesEl.textContent = 'Select a chord above to map its notes and intervals';
                 harmonyFretboardEl.querySelectorAll('.fret-button').forEach(btn => {
-                    btn.classList.remove('harmony-root', 'harmony-note');
+                    btn.classList.remove('harmony-root', 'harmony-note', 'open-muted');
                     btn.textContent = (btn.dataset.fret === '0') ? btn.dataset.noteName : '';
                 });
             }

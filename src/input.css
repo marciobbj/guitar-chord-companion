@@ -121,9 +121,27 @@ body {
     color: #18181b; /* zinc-900 */
     border-color: #a1a1aa; /* zinc-400 */
 }
+.fret-button[data-fret="0"].open-muted {
+    background-color: #f4f4f5; /* zinc-100 */
+    color: #a1a1aa; /* zinc-400 */
+    border-color: #e4e4e7; /* zinc-200 */
+    font-weight: 700;
+}
 .fret-button[data-fret="0"].selected {
     background-color: #000;
     color: #fde047; /* yellow-300 */
+    border-color: #000;
+}
+.fret-button[data-fret="0"].scale-root,
+.fret-button[data-fret="0"].harmony-root {
+    background-color: #3b82f6; /* blue-500 */
+    color: #ffffff;
+    border-color: #000;
+}
+.fret-button[data-fret="0"].scale-note,
+.fret-button[data-fret="0"].harmony-note {
+    background-color: #fde047; /* yellow-300 */
+    color: #000000;
     border-color: #000;
 }
 
