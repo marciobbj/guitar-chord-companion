@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guitar Chord Companion</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body class="bg-yellow-300 min-h-screen p-4 md:p-8">
+
+    <!-- Metronome Header -->
+    <div class="bg-white text-black py-4 px-6 md:py-6 md:px-8 mb-8 border-4 border-black neo-shadow">
+        <div class="flex flex-col md:flex-row items-center justify-between max-w-7xl mx-auto">
+            
+            <div class="flex items-center justify-center space-x-6 order-2 md:order-1">
+                <div id="knob">
+                    <div id="knob-indicator"></div>
+                </div>
+                <div class="text-center">
+                    <div id="bpm-display">120</div>
+                    <div class="text-lg font-bold -mt-2">BPM</div>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-center space-x-6 order-1 md:order-2 mb-6 md:mb-0">
+                <button id="metronome-start-stop" class="w-32 text-lg font-bold p-4 bg-green-400 border-4 border-black neo-shadow-sm hover:bg-green-500 active:translate-x-1 active:translate-y-1 active:neo-shadow-none transition-all">
+                    START
+                </button>
+                <div id="metronome-blip"></div>
+            </div>
+            
+            <div class="order-3 hidden md:block w-40 text-right">
+                <div class="text-5xl font-black tracking-tighter">companion</div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Main App Container -->
+    <div class="max-w-7xl mx-auto">
+        
+        <!-- Tab Navigation -->
+        <div class="flex space-x-2 md:space-x-4 mb-4">
+            <button class="tab-button active w-1/3 text-lg md:text-2xl font-black p-4 md:p-6 bg-white border-4 border-black neo-shadow-sm" data-tab="chord-id">
+                CHORD ID
+            </button>
+            <button class="tab-button w-1/3 text-lg md:text-2xl font-black p-4 md:p-6 bg-white border-4 border-black neo-shadow-sm" data-tab="scales">
+                SCALES
+            </button>
+            <button class="tab-button w-1/3 text-lg md:text-2xl font-black p-4 md:p-6 bg-white border-4 border-black neo-shadow-sm" data-tab="harmony">
+                HARMONY
+            </button>
+        </div>
+
+        <!-- ======================= -->
+        <!-- TAB 1: CHORD ID         -->
+        <!-- ======================= -->
+        <div id="panel-chord-id" class="tab-panel">
+            
+            <!-- Chord ID Results Panel -->
+            <div class="bg-white border-4 border-black neo-shadow p-6 md:p-8 mb-8 max-w-4xl mx-auto">
+                <div class="text-center mb-6">
+                    <h2 id="chord-name" class="text-4xl md:text-6xl font-black text-blue-500" style="min-height: 72px;">---</h2>
+                    <p id="chord-notes" class="text-lg md:text-xl font-bold text-gray-700">Select 2+ notes on the fretboard</p>
+                </div>
+                
+                <div class="border-t-4 border-black pt-6">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+                        <div class="md:col-span-2 grid grid-cols-2 gap-4">
+                            <div>
+                                <label for="builder-root" class="block text-sm font-bold text-gray-700 mb-1">ROOT NOTE</label>
+                                <select id="builder-root" class="w-full p-3 font-bold bg-zinc-200 border-4 border-black neo-shadow-inset-sm">
+                                    <option>A</option>
+                                    <option>A#</option>
+                                    <option>B</option>
+                                    <option>C</option>
+                                    <option>C#</option>
+                                    <option>D</option>
+                                    <option>D#</option>
+                                    <option>E</option>
+                                    <option>F</option>
+                                    <option>F#</option>
+                                    <option>G</option>
+                                    <option>G#</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="builder-type" class="block text-sm font-bold text-gray-700 mb-1">CHORD TYPE</label>
+                                <select id="builder-type" class="w-full p-3 font-bold bg-zinc-200 border-4 border-black neo-shadow-inset-sm">
+                                    <option value="0,4,7">Major</option>
+                                    <option value="0,3,7">Minor</option>
+                                    <option value="0,7">5 (Power Chord)</option>
+                                    <option value="0,4,7,10">7 (Dominant)</option>
+                                    <option value="0,4,7,11">Major 7</option>
+                                    <option value="0,3,7,10">Minor 7</option>
+                                    <option value="0,3,6,10">m7(b5) (Half-Dim)</option>
+                                    <option value="0,3,6,9">Diminished 7</option>
+                                    <option value="0,4,8">Augmented</option>
+                                    <option value="0,2,4,10">9 (Dominant)</option>
+                                    <option value="0,2,4,11">Major 9</option>
+                                    <option value="0,2,3,10">Minor 9</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="flex space-x-2">
+                             <button id="show-chord-btn" class="w-1/2 md:w-full text-lg font-bold p-3 bg-blue-400 border-4 border-black neo-shadow-sm hover:bg-blue-500 active:translate-x-1 active:translate-y-1 active:neo-shadow-none transition-all">
+                                SHOW
+                            </button>
+                            <button id="clear-fretboard-btn" class="w-1/2 md:w-full text-lg font-bold p-3 bg-red-400 border-4 border-black neo-shadow-sm hover:bg-red-500 active:translate-x-1 active:translate-y-1 active:neo-shadow-none transition-all">
+                                CLEAR
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Fretboard Container -->
+            <div class="bg-white border-4 border-black neo-shadow overflow-hidden">
+                <div id="fretboard-wrapper-chord-id" class="overflow-x-auto pb-8">
+                    <div id="fretboard-container-chord-id" class="pt-4">
+                        <!-- Fretboard será gerado aqui -->
+                    </div>
+                    <div id="fret-numbers-container-chord-id">
+                        <!-- Números dos trastes serão gerados aqui -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ======================= -->
+        <!-- TAB 2: SCALES           -->
+        <!-- ======================= -->
+        <div id="panel-scales" class="tab-panel hidden">
+            
+            <!-- Scales Control Panel -->
+            <div class="max-w-xl mx-auto bg-white border-4 border-black neo-shadow p-6 md:p-8 mb-8">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label for="scale-root" class="block text-sm font-bold text-gray-700 mb-1">ROOT NOTE</label>
+                        <select id="scale-root" class="w-full p-3 font-bold bg-zinc-200 border-4 border-black neo-shadow-inset-sm">
+                            <option>A</option>
+                            <option>A#</option>
+                            <option>B</option>
+                            <option>C</option>
+                            <option>C#</option>
+                            <option>D</option>
+                            <option>D#</option>
+                            <option>E</option>
+                            <option>F</option>
+                            <option>F#</option>
+                            <option>G</option>
+                            <option>G#</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="scale-type" class="block text-sm font-bold text-gray-700 mb-1">SCALE TYPE</label>
+                        <select id="scale-type" class="w-full p-3 font-bold bg-zinc-200 border-4 border-black neo-shadow-inset-sm">
+                            <option value="0,2,4,5,7,9,11">Major (Ionian)</option>
+                            <option value="0,2,3,5,7,8,10">Minor (Aeolian)</option>
+                            <option value="0,3,5,7,10">Minor Pentatonic</option>
+                            <option value="0,2,4,7,9">Major Pentatonic</option>
+                            <option value="0,3,5,6,7,10">Blues</option>
+                            <option value="0,2,3,5,7,8,11">Harmonic Minor</option>
+                            <option value="0,2,3,5,7,9,11">Melodic Minor</option>
+                            <option value="0,1,3,5,7,8,10">Phrygian Dominant</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fretboard Container -->
+            <div class="bg-white border-4 border-black neo-shadow overflow-hidden">
+                <div id="fretboard-wrapper-scales" class="overflow-x-auto pb-8">
+                    <div id="fretboard-container-scales" class="pt-4">
+                        <!-- Fretboard será gerado aqui -->
+                    </div>
+                    <div id="fret-numbers-container-scales">
+                        <!-- Números dos trastes serão gerados aqui -->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ======================= -->
+        <!-- TAB 3: HARMONY          -->
+        <!-- ======================= -->
+        <div id="panel-harmony" class="tab-panel hidden">
+            
+            <!-- Harmony Control Panel -->
+            <div class="max-w-xl mx-auto bg-white border-4 border-black neo-shadow p-6 md:p-8 mb-8">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label for="harmony-root" class="block text-sm font-bold text-gray-700 mb-1">TONIC (KEY)</label>
+                        <select id="harmony-root" class="w-full p-3 font-bold bg-zinc-200 border-4 border-black neo-shadow-inset-sm">
+                            <option>A</option>
+                            <option>A#</option>
+                            <option>B</option>
+                            <option>C</option>
+                            <option>C#</option>
+                            <option>D</option>
+                            <option>D#</option>
+                            <option>E</option>
+                            <option>F</option>
+                            <option>F#</option>
+                            <option>G</option>
+                            <option>G#</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="harmony-type" class="block text-sm font-bold text-gray-700 mb-1">HARMONY TYPE</label>
+                        <select id="harmony-type" class="w-full p-3 font-bold bg-zinc-200 border-4 border-black neo-shadow-inset-sm">
+                            <option value="Major">Major</option>
+                            <option value="Natural Minor">Natural Minor</option>
+                            <option value="Harmonic Minor">Harmonic Minor</option>
+                            <option value="Melodic Minor">Melodic Minor</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Harmony Results Container -->
+            <div class="max-w-4xl mx-auto mb-6">
+                <div class="bg-white border-4 border-black neo-shadow overflow-hidden">
+                    <div id="harmony-results" class="divide-y-4 divide-black">
+                        <!-- Acordes do campo harmônico serão gerados aqui -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Inversion Help Section -->
+            <div class="max-w-4xl mx-auto mb-6">
+                <div class="bg-white border-4 border-black neo-shadow p-6 md:p-8">
+                    <h3 class="text-2xl font-black text-blue-500 mb-4">COMO LER O BRAÇO (INVERSÕES)</h3>
+                    <p class="text-gray-700 text-lg mb-3">
+                        Quando você seleciona um acorde (ex: "V7"), o braço da guitarra abaixo não mostra apenas *um* shape, ele mostra **todas as notas** desse acorde em **todo o braço**.
+                    </p>
+                    <p class="text-gray-700 text-lg mb-3">
+                        Cada nota é marcada com seu **intervalo** em relação à tônica (R, 3, 5, b7, etc.).
+                    </p>
+                    <p class="text-gray-700 text-lg font-bold mb-3">
+                        Uma inversão é simplesmente o mesmo acorde, mas com uma nota que não é a Tônica (R) como a nota mais grave (o baixo).
+                    </p>
+                    <ul class="list-disc list-inside text-gray-700 text-lg space-y-2">
+                        <li><strong>Estado Fundamental:</strong> A nota mais grave é a Tônica (<strong>R</strong>).</li>
+                        <li><strong>1ª Inversão:</strong> A nota mais grave é a Terça (<strong>3</strong> ou <strong>b3</strong>).</li>
+                        <li><strong>2ª Inversão:</strong> A nota mais grave é a Quinta (<strong>5</strong> ou <strong>b5</strong>).</li>
+                        <li><strong>3ª Inversão:</strong> A nota mais grave é a Sétima (<strong>7</strong> ou <strong>b7</strong>).</li>
+                    </ul>
+                    <p class="text-gray-700 text-lg mt-4">
+                        Para encontrar qualquer inversão, basta olhar o mapa no braço e escolher a nota de intervalo desejada como seu novo baixo (geralmente na 6ª, 5ª ou 4ª corda).
+                    </p>
+                </div>
+            </div>
+
+            <!-- Fretboard Container -->
+            <div class="bg-white border-4 border-black neo-shadow overflow-hidden">
+                <div id="fretboard-wrapper-harmony" class="overflow-x-auto pb-8">
+                    <div id="fretboard-container-harmony" class="pt-4">
+                        <!-- Fretboard será gerado aqui -->
+                    </div>
+                    <div id="fret-numbers-container-harmony">
+                        <!-- Números dos trastes serão gerados aqui -->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // ===================================
+            // CONSTANTES GLOBAIS
+            // ===================================
+            
+            const NOTES = ['A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#'];
+            const TUNING = [7, 0, 5, 10, 2, 7]; // [E, A, D, G, B, E] em índices (A=0)
+            const NUM_FRETS = 18; // 0 (open) + 18 frets
+            const DOT_MARKERS = [3, 5, 7, 9, 15, 17];
+            const DOT_MARKER_12 = 12;
+
+            // Enciclopédia de Acordes
+            const CHORD_INTERVALS = {
+                // Díades
+                '0,7': '5 (Power Chord)',
+                '0,4': ' (Major 3rd)',
+                '0,3': ' (Minor 3rd)',
+                '0,5': ' (Perfect 4th)',
+                '0,6': ' (Tritone)',
+                
+                // Tríades
+                '0,4,7': ' Major',
+                '0,3,7': ' Minor',
+                '0,4,8': ' Augmented',
+                '0,3,6': ' Diminished',
+                '0,5,7': ' sus4',
+                '0,2,7': ' sus2',
+
+                // Shell Voicings (Tríades representando Tétrades)
+                '0,4,10': ' 7 (Dominant)',     // R, 3, b7 (Shell C7)
+                '0,3,10': ' Minor 7',          // R, b3, b7 (Shell Cm7)
+                '0,4,11': ' Major 7',          // R, 3, 7 (Shell Cmaj7)
+                '0,3,6': ' m7(b5)',           // R, b3, b5 (Shell Cm7b5)
+
+                // Tétrades
+                '0,4,7,10': ' 7 (Dominant)',
+                '0,4,7,11': ' Major 7',
+                '0,3,7,10': ' Minor 7',
+                '0,3,6,10': ' m7(b5) (Half-Dim)',
+                '0,3,6,9': ' Diminished 7',
+                '0,4,8,10': ' 7(#5) (Augmented)',
+                '0,4,7,9': ' 6',
+                '0,3,7,9': ' Minor 6',
+                
+                // Extensões (comuns sem 5a)
+                '0,2,4,10': ' 9 (Dominant)',     // R, 3, b7, 9 (Ex: C9, sem 5ª)
+                '0,2,4,11': ' Major 9',          // R, 3, 7, 9 (Ex: Cmaj9, sem 5ª)
+                '0,2,3,10': ' Minor 9',          // R, b3, b7, 9 (Ex: Cm9, sem 5ª)
+                '0,2,4,7': ' add9',              // R, 3, 5, 9 (Sem 7ª)
+                '0,2,3,7': ' madd9',             // R, b3, 5, 9 (Sem 7ª)
+                '0,2,3,11': ' Minor (Major 9)',  // R, b3, 7, 9 (Ex: Cm(maj9), sem 5ª)
+            };
+            
+            // Enciclopédia de Escalas
+            const SCALE_INTERVALS = {
+                '0,2,4,5,7,9,11': 'Major (Ionian)',
+                '0,2,3,5,7,8,10': 'Minor (Aeolian)',
+                '0,3,5,7,10': 'Minor Pentatonic',
+                '0,2,4,7,9': 'Major Pentatonic',
+                '0,3,5,6,7,10': 'Blues',
+                '0,2,3,5,7,8,11': 'Harmonic Minor',
+                '0,2,3,5,7,9,11': 'Melodic Minor',
+                '0,1,3,5,7,8,10': 'Phrygian Dominant'
+            };
+            
+            // Enciclopédia de Campos Harmônicos (Tétrades)
+            const HARMONY_FORMULAS = {
+                'Major': [
+                    { degree: 'I', quality: 'maj7', intervals: [0, 4, 7, 11], rootInterval: 0 },
+                    { degree: 'ii', quality: 'm7', intervals: [0, 3, 7, 10], rootInterval: 2 },
+                    { degree: 'iii', quality: 'm7', intervals: [0, 3, 7, 10], rootInterval: 4 },
+                    { degree: 'IV', quality: 'maj7', intervals: [0, 4, 7, 11], rootInterval: 5 },
+                    { degree: 'V', quality: '7', intervals: [0, 4, 7, 10], rootInterval: 7 },
+                    { degree: 'vi', quality: 'm7', intervals: [0, 3, 7, 10], rootInterval: 9 },
+                    { degree: 'vii', quality: 'm7(b5)', intervals: [0, 3, 6, 10], rootInterval: 11 }
+                ],
+                'Natural Minor': [
+                    { degree: 'i', quality: 'm7', intervals: [0, 3, 7, 10], rootInterval: 0 },
+                    { degree: 'ii', quality: 'm7(b5)', intervals: [0, 3, 6, 10], rootInterval: 2 },
+                    { degree: 'III', quality: 'maj7', intervals: [0, 4, 7, 11], rootInterval: 3 },
+                    { degree: 'iv', quality: 'm7', intervals: [0, 3, 7, 10], rootInterval: 5 },
+                    { degree: 'v', quality: 'm7', intervals: [0, 3, 7, 10], rootInterval: 7 },
+                    { degree: 'VI', quality: 'maj7', intervals: [0, 4, 7, 11], rootInterval: 8 },
+                    { degree: 'VII', quality: '7', intervals: [0, 4, 7, 10], rootInterval: 10 }
+                ],
+                'Harmonic Minor': [
+                    { degree: 'i', quality: 'm(maj7)', intervals: [0, 3, 7, 11], rootInterval: 0 },
+                    { degree: 'ii', quality: 'm7(b5)', intervals: [0, 3, 6, 10], rootInterval: 2 },
+                    { degree: 'III', quality: 'maj7(#5)', intervals: [0, 4, 8, 11], rootInterval: 3 },
+                    { degree: 'iv', quality: 'm7', intervals: [0, 3, 7, 10], rootInterval: 5 },
+                    { degree: 'V', quality: '7', intervals: [0, 4, 7, 10], rootInterval: 7 },
+                    { degree: 'VI', quality: 'maj7', intervals: [0, 4, 7, 11], rootInterval: 8 },
+                    { degree: 'vii', quality: 'dim7', intervals: [0, 3, 6, 9], rootInterval: 11 }
+                ],
+                'Melodic Minor': [
+                    { degree: 'i', quality: 'm(maj7)', intervals: [0, 3, 7, 11], rootInterval: 0 },
+                    { degree: 'ii', quality: 'm7', intervals: [0, 3, 7, 10], rootInterval: 2 },
+                    { degree: 'III', quality: 'maj7(#5)', intervals: [0, 4, 8, 11], rootInterval: 3 },
+                    { degree: 'IV', quality: '7', intervals: [0, 4, 7, 10], rootInterval: 5 },
+                    { degree: 'V', quality: '7', intervals: [0, 4, 7, 10], rootInterval: 7 },
+                    { degree: 'vi', quality: 'm7(b5)', intervals: [0, 3, 6, 10], rootInterval: 9 },
+                    { degree: 'vii', quality: 'm7(b5)', intervals: [0, 3, 6, 10], rootInterval: 11 }
+                ]
+            };
+            
+            // Enciclopédia de Nomes de Intervalos
+            const INTERVAL_NAMES = {
+                0: 'R', 1: 'b2', 2: '2', 3: 'b3', 4: '3', 5: '4',
+                6: 'b5', 7: '5', 8: '#5', 9: '6', 10: 'b7', 11: '7'
+            };
+
+            // ===================================
+            // METRÔNOMO
+            // ===================================
+            
+            const knob = document.getElementById('knob');
+            const knobIndicator = document.getElementById('knob-indicator');
+            const bpmDisplay = document.getElementById('bpm-display');
+            const startStopBtn = document.getElementById('metronome-start-stop');
+            const blip = document.getElementById('metronome-blip');
+
+            let audioContext;
+            let isMetronomePlaying = false;
+            let currentBPM = 120;
+            let currentBeat = 0;
+            let nextNoteTime = 0.0;
+            let timerID;
+
+            let isDragging = false;
+            let startAngle = 0;
+            let currentAngle = 0;
+            const minBPM = 30;
+            const maxBPM = 240;
+            const minAngle = -135;
+            const maxAngle = 135;
+
+            function initAudio() {
+                if (!audioContext) {
+                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                }
+            }
+
+            function updateKnob(bpm) {
+                currentBPM = Math.max(minBPM, Math.min(maxBPM, bpm));
+                bpmDisplay.textContent = currentBPM;
+                
+                const bpmPercent = (currentBPM - minBPM) / (maxBPM - minBPM);
+                currentAngle = minAngle + (maxAngle - minAngle) * bpmPercent;
+                knobIndicator.style.transform = `translateX(-50%) rotate(${currentAngle}deg)`;
+            }
+
+            function scheduleNote() {
+                while (nextNoteTime < audioContext.currentTime + 0.1) {
+                    // Agendar o som
+                    const osc = audioContext.createOscillator();
+                    const gain = audioContext.createGain();
+                    osc.connect(gain);
+                    gain.connect(audioContext.destination);
+
+                    if (currentBeat % 4 === 0) {
+                        osc.frequency.setValueAtTime(880.0, nextNoteTime); // Acentuado
+                        gain.gain.setValueAtTime(0.5, nextNoteTime);
+                    } else {
+                        osc.frequency.setValueAtTime(440.0, nextNoteTime); // Normal
+                        gain.gain.setValueAtTime(0.3, nextNoteTime);
+                    }
+
+                    osc.start(nextNoteTime);
+                    osc.stop(nextNoteTime + 0.05);
+
+                    // Atualizar o blip visual
+                    const beat = currentBeat;
+                    setTimeout(() => {
+                        blip.classList.remove('active', 'accent');
+                        if (beat % 4 === 0) {
+                            blip.classList.add('accent');
+                        } else {
+                            blip.classList.add('active');
+                        }
+                        // Remover classes após a animação
+                        setTimeout(() => blip.classList.remove('active', 'accent'), 50);
+                    }, (nextNoteTime - audioContext.currentTime) * 1000);
+
+                    // Avançar para a próxima batida
+                    const secondsPerBeat = 60.0 / currentBPM;
+                    nextNoteTime += secondsPerBeat;
+                    currentBeat = (currentBeat + 1) % 4;
+                }
+            }
+
+            function scheduler() {
+                if (isMetronomePlaying) {
+                    scheduleNote();
+                    timerID = setTimeout(scheduler, 25);
+                }
+            }
+
+            function startStopMetronome() {
+                initAudio();
+                isMetronomePlaying = !isMetronomePlaying;
+
+                if (isMetronomePlaying) {
+                    currentBeat = 0;
+                    nextNoteTime = audioContext.currentTime;
+                    scheduler();
+                    startStopBtn.textContent = 'STOP';
+                    startStopBtn.classList.remove('bg-green-400', 'hover:bg-green-500');
+                    startStopBtn.classList.add('bg-red-400', 'hover:bg-red-500');
+                } else {
+                    clearTimeout(timerID);
+                    startStopBtn.textContent = 'START';
+                    startStopBtn.classList.remove('bg-red-400', 'hover:bg-red-500');
+                    startStopBtn.classList.add('bg-green-400', 'hover:bg-green-500');
+                    blip.classList.remove('active', 'accent');
+                }
+            }
+
+            startStopBtn.addEventListener('click', startStopMetronome);
+
+            // Lógica do Knob
+            function getAngle(e) {
+                const rect = knob.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+                const clientX = e.clientX || e.touches[0].clientX;
+                const clientY = e.clientY || e.touches[0].clientY;
+                return Math.atan2(clientY - centerY, clientX - centerX) * (180 / Math.PI) + 90; // +90 para ajustar o 0 para o topo
+            }
+
+            function angleToBPM(angle) {
+                let boundedAngle = Math.max(minAngle, Math.min(maxAngle, angle));
+                const percent = (boundedAngle - minAngle) / (maxAngle - minAngle);
+                return Math.round(minBPM + (maxBPM - minBPM) * percent);
+            }
+
+            knob.addEventListener('mousedown', (e) => {
+                e.preventDefault();
+                isDragging = true;
+                startAngle = getAngle(e) - currentAngle;
+            });
+
+            knob.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                isDragging = true;
+                startAngle = getAngle(e) - currentAngle;
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                e.preventDefault();
+                let newAngle = getAngle(e) - startAngle;
+                updateKnob(angleToBPM(newAngle));
+            });
+
+            document.addEventListener('touchmove', (e) => {
+                if (!isDragging) return;
+                e.preventDefault();
+                let newAngle = getAngle(e) - startAngle;
+                updateKnob(angleToBPM(newAngle));
+            });
+
+            document.addEventListener('mouseup', () => isDragging = false);
+            document.addEventListener('touchend', () => isDragging = false);
+
+            updateKnob(currentBPM); // Inicializa o knob
+
+            // ===================================
+            // LÓGICA DAS ABAS
+            // ===================================
+            
+            const tabs = document.querySelectorAll('.tab-button');
+            const panels = document.querySelectorAll('.tab-panel');
+            const panelScales = document.getElementById('panel-scales');
+            const panelHarmony = document.getElementById('panel-harmony');
+            
+            tabs.forEach((tab, index) => {
+                tab.addEventListener('click', () => {
+                    // Desativa todos
+                    tabs.forEach(t => t.classList.remove('active'));
+                    panels.forEach(p => p.classList.add('hidden'));
+                    
+                    // Ativa o clicado
+                    tab.classList.add('active');
+                    panels[index].classList.remove('hidden');
+
+                    // Ação ao trocar de aba
+                    if (panels[index] === panelScales) {
+                        drawScale(); // Desenha a escala ao abrir a aba
+                    } else if (panels[index] === panelHarmony) {
+                        drawHarmony(); // Desenha o campo harmônico ao abrir a aba
+                    }
+                });
+            });
+
+            // ===================================
+            // FUNÇÃO: CRIAR BRAÇO (FRETBOARD)
+            // ===================================
+            
+            function createFretboard(containerElement, numbersElement, clickHandler) {
+                containerElement.innerHTML = ''; // Limpa o braço
+                numbersElement.innerHTML = ''; // Limpa os números
+                
+                const fretboardGrid = document.createElement('div');
+                fretboardGrid.className = 'fretboard-grid';
+
+                const fretNumbersGrid = document.createElement('div');
+                fretNumbersGrid.className = 'fret-numbers-grid';
+
+                for (let string = 0; string < 6; string++) {
+                    for (let fret = 0; fret <= NUM_FRETS; fret++) {
+                        const cell = document.createElement('div');
+                        cell.className = 'fretboard-cell';
+                        
+                        // Linha da Corda
+                        const stringLine = document.createElement('div');
+                        stringLine.classList.add('string-line');
+                        stringLine.style.backgroundColor = '#a1a1aa'; // zinc-400
+                        stringLine.style.height = '2px'; // Espessura normalizada
+                        cell.appendChild(stringLine);
+                        
+                        // Barra do Traste (visual)
+                        if (fret === 0) {
+                            // Adiciona a 'nut' (pestana) à direita do traste 0
+                            const fretBar = document.createElement('div');
+                            fretBar.classList.add('fret-bar', 'nut');
+                            cell.appendChild(fretBar);
+                        } else if (fret > 0 && fret < NUM_FRETS) { 
+                            const fretBar = document.createElement('div');
+                            fretBar.classList.add('fret-bar');
+                            cell.appendChild(fretBar);
+                        }
+                        
+                        // Botão/Nota
+                        const button = document.createElement('button');
+                        button.className = 'fret-button';
+                        const noteIndex = (TUNING[string] + fret) % 12;
+                        const noteName = NOTES[noteIndex];
+                        button.dataset.string = string;
+                        button.dataset.fret = fret;
+                        button.dataset.noteIndex = noteIndex;
+                        button.dataset.noteName = noteName;
+                        
+                        if (fret === 0) {
+                            button.textContent = noteName;
+                        }
+                        
+                        if (clickHandler) {
+                            button.addEventListener('click', () => clickHandler(button));
+                        }
+                        
+                        cell.appendChild(button);
+                        fretboardGrid.appendChild(cell);
+                    }
+                }
+                
+                // Gerar números dos trastes
+                for (let fret = 0; fret <= NUM_FRETS; fret++) {
+                    const numberCell = document.createElement('div');
+                    numberCell.className = 'fret-number-cell';
+                    
+                    if (fret > 0) {
+                        const numberEl = document.createElement('span');
+                        numberEl.className = 'fret-number';
+                        numberEl.textContent = fret;
+                        
+                        if (DOT_MARKERS.includes(fret)) {
+                            numberEl.classList.add('dot');
+                        }
+                        if (fret === DOT_MARKER_12) {
+                            numberEl.classList.add('dot-12');
+                        }
+                        numberCell.appendChild(numberEl);
+                    }
+                    if (fret === 0) {
+                        numberCell.textContent = 'OPEN';
+                        numberCell.classList.add('text-xs', 'font-bold');
+                    }
+                    
+                    fretNumbersGrid.appendChild(numberCell);
+                }
+
+                containerElement.appendChild(fretboardGrid);
+                numbersElement.appendChild(fretNumbersGrid);
+            }
+
+            // ===================================
+            // ABA 1: LÓGICA DO CHORD ID
+            // ===================================
+            
+            const chordNameEl = document.getElementById('chord-name');
+            const chordNotesEl = document.getElementById('chord-notes');
+            const clearBtn = document.getElementById('clear-fretboard-btn');
+            const chordFretboardEl = document.getElementById('fretboard-container-chord-id');
+            const chordNumbersEl = document.getElementById('fret-numbers-container-chord-id');
+            const showChordBtn = document.getElementById('show-chord-btn');
+            const builderRootEl = document.getElementById('builder-root');
+            const builderTypeEl = document.getElementById('builder-type');
+            
+            let selectedNotes = []; // Armazena { button, noteName, noteIndex, string, fret }
+            let isBuilderMode = false; // Controla se estamos em modo "Builder"
+
+            function onFretClick(button) {
+                // Se estávamos no modo builder, limpe o braço e volte ao modo identificador
+                if (isBuilderMode) {
+                    clearFretboard(false); // false = não reseta o resultado
+                    isBuilderMode = false;
+                }
+                
+                const { noteName, noteIndex, string, fret } = button.dataset;
+                const existingNoteIndex = selectedNotes.findIndex(n => n.string === string);
+
+                // Desselecionar nota existente na mesma corda
+                if (existingNoteIndex > -1) {
+                    const oldNote = selectedNotes.splice(existingNoteIndex, 1)[0];
+                    oldNote.button.classList.remove('selected');
+                    oldNote.button.textContent = (oldNote.fret === '0') ? oldNote.noteName : '';
+                }
+
+                // Se o clique não foi na nota já selecionada, selecione-a
+                if (!button.classList.contains('selected')) {
+                    selectedNotes.push({
+                        button: button,
+                        noteName: noteName,
+                        noteIndex: parseInt(noteIndex),
+                        string: parseInt(string),
+                        fret: parseInt(fret)
+                    });
+                    button.classList.add('selected');
+                    button.textContent = noteName;
+                }
+                
+                identifyChord();
+            }
+
+            function identifyChord() {
+                const noteIndices = selectedNotes.map(n => n.noteIndex);
+                const uniqueNotes = [...new Set(noteIndices)].sort((a, b) => a - b);
+                
+                if (uniqueNotes.length < 2) {
+                    chordNameEl.textContent = '---';
+                    chordNotesEl.textContent = (uniqueNotes.length === 1) ? 
+                        NOTES[uniqueNotes[0]] : 
+                        'Select 2+ notes';
+                    return;
+                }
+
+                const noteNames = uniqueNotes.map(index => NOTES[index]).join(', ');
+                chordNotesEl.textContent = `Notes: ${noteNames}`;
+
+                // Encontrar a nota mais grave (baixo)
+                if (selectedNotes.length === 0) {
+                    chordNameEl.textContent = '---';
+                    chordNotesEl.textContent = 'Select 2+ notes';
+                    return;
+                }
+                const bassNote = selectedNotes.sort((a, b) => a.string - b.string)[0];
+                const bassNoteName = bassNote.noteName;
+
+                const allFoundChords = [];
+
+                // Iterar sobre cada nota única como uma raiz em potencial
+                for (const rootIndex of uniqueNotes) {
+                    const intervals = uniqueNotes
+                        .map(noteIndex => (noteIndex - rootIndex + 12) % 12)
+                        .sort((a, b) => a - b);
+                    
+                    const intervalString = intervals.join(',');
+                    
+                    if (CHORD_INTERVALS[intervalString]) {
+                        const rootName = NOTES[rootIndex];
+                        const chordType = CHORD_INTERVALS[intervalString];
+                        
+                        allFoundChords.push({
+                            root: rootName,
+                            type: chordType,
+                            bass: bassNoteName
+                        });
+                    }
+                }
+                
+                // Lógica para escolher o melhor acorde
+                let bestChord = null;
+                if (allFoundChords.length === 1) {
+                    bestChord = allFoundChords[0];
+                } else if (allFoundChords.length > 1) {
+                    // Prioridade 1: O acorde cuja raiz é a nota do baixo
+                    bestChord = allFoundChords.find(c => c.root === c.bass);
+                    // Prioridade 2: Se nenhum for a raiz, pegar o primeiro que encontrar
+                    if (!bestChord) {
+                        bestChord = allFoundChords[0];
+                    }
+                }
+
+                // --- Exibir Resultados ---
+                if (bestChord) {
+                    let name = `${bestChord.root}${bestChord.type}`;
+                    // Apenas mostrar a barra se a raiz e o baixo forem diferentes
+                    if (bestChord.root !== bestChord.bass) {
+                        name += ` / ${bestChord.bass}`;
+                    }
+                    chordNameEl.textContent = name;
+                } else {
+                    chordNameEl.textContent = 'Unknown Chord';
+                }
+            }
+            
+            function clearFretboard(resetResult = true) {
+                isBuilderMode = false;
+                selectedNotes.forEach(note => {
+                    note.button.classList.remove('selected');
+                    note.button.textContent = (note.fret === 0) ? note.noteName : '';
+                });
+                selectedNotes = [];
+                
+                // Limpar também as notas do modo "Builder"
+                chordFretboardEl.querySelectorAll('.fret-button.scale-root, .fret-button.scale-note').forEach(btn => {
+                    btn.classList.remove('scale-root', 'scale-note');
+                    btn.textContent = (btn.dataset.fret === '0') ? btn.dataset.noteName : '';
+                });
+                
+                if (resetResult) {
+                    chordNameEl.textContent = '---';
+                    chordNotesEl.textContent = 'Select 2+ notes on the fretboard';
+                }
+            }
+            
+            function buildChord() {
+                clearFretboard(false);
+                isBuilderMode = true; // Ativa o modo "Builder"
+                
+                const rootName = builderRootEl.value;
+                const rootIndex = NOTES.indexOf(rootName);
+                const intervalString = builderTypeEl.value;
+                const intervals = intervalString.split(',').map(Number);
+                const chordType = builderTypeEl.options[builderTypeEl.selectedIndex].text;
+                
+                const chordNoteIndices = intervals.map(interval => (rootIndex + interval) % 12);
+                
+                // Atualiza o painel de resultados
+                chordNameEl.textContent = `${rootName} ${chordType}`;
+                chordNotesEl.textContent = `Notes: ${chordNoteIndices.map(i => NOTES[i]).join(', ')}`;
+                
+                // Ilumina o braço
+                chordFretboardEl.querySelectorAll('.fret-button').forEach(btn => {
+                    const noteIndex = parseInt(btn.dataset.noteIndex);
+                    
+                    if (chordNoteIndices.includes(noteIndex)) {
+                        btn.textContent = btn.dataset.noteName;
+                        if (noteIndex === rootIndex) {
+                            btn.classList.add('scale-root'); // Reutiliza o estilo da tônica
+                        } else {
+                            btn.classList.add('scale-note'); // Reutiliza o estilo da nota
+                        }
+                    }
+                });
+            }
+
+            clearBtn.addEventListener('click', () => clearFretboard(true));
+            showChordBtn.addEventListener('click', buildChord);
+
+            // ===================================
+            // ABA 2: LÓGICA DAS ESCALAS
+            // ===================================
+
+            const scaleRootEl = document.getElementById('scale-root');
+            const scaleTypeEl = document.getElementById('scale-type');
+            const scaleFretboardEl = document.getElementById('fretboard-container-scales');
+            const scaleNumbersEl = document.getElementById('fret-numbers-container-scales');
+
+            function drawScale() {
+                const rootName = scaleRootEl.value;
+                const rootIndex = NOTES.indexOf(rootName);
+                const intervalString = scaleTypeEl.value;
+                const intervals = intervalString.split(',').map(Number);
+                
+                const scaleNoteIndices = intervals.map(interval => (rootIndex + interval) % 12);
+                
+                scaleFretboardEl.querySelectorAll('.fret-button').forEach(btn => {
+                    const noteIndex = parseInt(btn.dataset.noteIndex);
+                    const noteName = btn.dataset.noteName;
+                    
+                    // Resetar classes e texto
+                    btn.classList.remove('scale-root', 'scale-note');
+                    btn.textContent = ''; // Limpa TUDO
+
+                    // Aplicar classes da escala
+                    if (scaleNoteIndices.includes(noteIndex)) {
+                        btn.textContent = noteName; // Mostra o nome da nota
+                        if (noteIndex === rootIndex) {
+                            btn.classList.add('scale-root');
+                        } else {
+                            btn.classList.add('scale-note');
+                        }
+                    } else {
+                         // Se a nota não está na escala, mas é corda solta, mostre o nome
+                        if (btn.dataset.fret === '0') {
+                            btn.textContent = noteName;
+                        }
+                    }
+                });
+            }
+
+            scaleRootEl.addEventListener('change', drawScale);
+            scaleTypeEl.addEventListener('change', drawScale);
+            
+            // ===================================
+            // ABA 3: LÓGICA DA HARMONIA
+            // ===================================
+            
+            const harmonyRootEl = document.getElementById('harmony-root');
+            const harmonyTypeEl = document.getElementById('harmony-type');
+            const harmonyResultsEl = document.getElementById('harmony-results');
+            const harmonyFretboardEl = document.getElementById('fretboard-container-harmony');
+            const harmonyNumbersEl = document.getElementById('fret-numbers-container-harmony');
+            
+            let currentHarmonyChord = null; // Armazena os dados do acorde clicado
+
+            function drawHarmony() {
+                const rootName = harmonyRootEl.value;
+                const rootIndex = NOTES.indexOf(rootName);
+                const harmonyType = harmonyTypeEl.value;
+                
+                const formula = HARMONY_FORMULAS[harmonyType];
+                if (!formula) return;
+                
+                harmonyResultsEl.innerHTML = ''; // Limpa resultados anteriores
+                
+                formula.forEach(chordData => {
+                    const chordRootIndex = (rootIndex + chordData.rootInterval) % 12;
+                    const chordRootName = NOTES[chordRootIndex];
+                    
+                    const el = document.createElement('button');
+                    el.className = 'w-full flex justify-between items-center p-4 md:p-6 hover:bg-zinc-100 transition-colors focus:outline-none focus:bg-blue-100';
+                    el.innerHTML = `
+                        <div class="flex items-baseline space-x-4">
+                            <span class="text-xl md:text-3xl font-black text-blue-500 w-16 text-right">${chordData.degree}</span>
+                            <span class="text-lg md:text-2xl font-bold">${chordRootName}${chordData.quality.replace('m', 'm').replace('maj', 'maj')}</span>
+                        </div>
+                        <span class="text-sm md:text-base text-gray-600">${chordData.quality}</span>
+                    `;
+                    
+                    // Armazena os dados do acorde no botão
+                    el.dataset.rootIndex = chordRootIndex;
+                    el.dataset.intervals = chordData.intervals.join(',');
+                    
+                    el.addEventListener('click', () => {
+                        // Remove o 'active' de outros botões
+                        harmonyResultsEl.querySelectorAll('button').forEach(btn => btn.classList.remove('bg-blue-200'));
+                        el.classList.add('bg-blue-200'); // Ativa o clicado
+                        
+                        currentHarmonyChord = {
+                            rootIndex: chordRootIndex,
+                            intervals: chordData.intervals.map(Number)
+                        };
+                        drawNotesOnHarmonyFretboard();
+                    });
+                    
+                    harmonyResultsEl.appendChild(el);
+                });
+                
+                // Limpa o braço da harmonia se o campo harmônico mudar
+                currentHarmonyChord = null;
+                clearHarmonyFretboard();
+            }
+            
+            function drawNotesOnHarmonyFretboard() {
+                if (!currentHarmonyChord) {
+                    clearHarmonyFretboard();
+                    return;
+                }
+                
+                const { rootIndex, intervals } = currentHarmonyChord;
+                const chordNoteIndices = intervals.map(i => (rootIndex + i) % 12);
+                
+                harmonyFretboardEl.querySelectorAll('.fret-button').forEach(btn => {
+                    const noteIndex = parseInt(btn.dataset.noteIndex);
+                    
+                    // Resetar
+                    btn.classList.remove('harmony-root', 'harmony-note');
+                    btn.textContent = (btn.dataset.fret === '0') ? btn.dataset.noteName : '';
+
+                    if (chordNoteIndices.includes(noteIndex)) {
+                        // Encontra o intervalo
+                        const interval = (noteIndex - rootIndex + 12) % 12;
+                        btn.textContent = INTERVAL_NAMES[interval];
+                        
+                        if (noteIndex === rootIndex) {
+                            btn.classList.add('harmony-root');
+                        } else {
+                            btn.classList.add('harmony-note');
+                        }
+                    }
+                });
+            }
+            
+            function clearHarmonyFretboard() {
+                harmonyFretboardEl.querySelectorAll('.fret-button').forEach(btn => {
+                    btn.classList.remove('harmony-root', 'harmony-note');
+                    btn.textContent = (btn.dataset.fret === '0') ? btn.dataset.noteName : '';
+                });
+            }
+
+            harmonyRootEl.addEventListener('change', drawHarmony);
+            harmonyTypeEl.addEventListener('change', drawHarmony);
+
+            // ===================================
+            // INICIALIZAÇÃO
+            // ===================================
+            
+            // Criar os três braços
+            createFretboard(chordFretboardEl, chordNumbersEl, onFretClick);
+            createFretboard(scaleFretboardEl, scaleNumbersEl, null); // Sem clique
+            createFretboard(harmonyFretboardEl, harmonyNumbersEl, null); // Sem clique
+            
+            // Inicializar as abas Scales e Harmony
+            drawScale();
+            drawHarmony();
+        });
+    </script>
+</body>
+</html>
