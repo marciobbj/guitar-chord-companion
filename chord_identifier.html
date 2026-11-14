@@ -412,6 +412,19 @@ body {
                     </div>
                 </div>
 
+                <!-- Transpose Controls -->
+                <div class="border-t-4 border-black mt-4 md:mt-6 pt-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+                    <span class="text-xs sm:text-sm font-black text-gray-700 uppercase tracking-wider">TRANSPOSE FRETBOARD</span>
+                    <div class="flex items-center space-x-3 w-full sm:w-auto justify-center">
+                        <button id="transpose-down-btn" class="flex-1 sm:flex-initial px-4 py-2 text-sm sm:text-base font-black bg-yellow-300 border-4 border-black neo-shadow-sm hover:bg-yellow-400 active:translate-x-0.5 active:translate-y-0.5 transition-all">
+                            ◀ -1 FRET
+                        </button>
+                        <button id="transpose-up-btn" class="flex-1 sm:flex-initial px-4 py-2 text-sm sm:text-base font-black bg-yellow-300 border-4 border-black neo-shadow-sm hover:bg-yellow-400 active:translate-x-0.5 active:translate-y-0.5 transition-all">
+                            +1 FRET ▶
+                        </button>
+                    </div>
+                </div>
+
             </div>
 
             <!-- Fretboard Container -->
@@ -1251,8 +1264,8 @@ body {
                 selectedNotes = [];
                 
                 // Limpar também as notas do modo "Builder"
-                chordFretboardEl.querySelectorAll('.fret-button.scale-root, .fret-button.scale-note').forEach(btn => {
-                    btn.classList.remove('scale-root', 'scale-note');
+                chordFretboardEl.querySelectorAll('.fret-button.scale-root, .fret-button.scale-note, .fret-button.open-muted').forEach(btn => {
+                    btn.classList.remove('scale-root', 'scale-note', 'open-muted');
                     btn.textContent = (btn.dataset.fret === '0') ? btn.dataset.noteName : '';
                 });
                 
@@ -1281,6 +1294,8 @@ body {
                 // Ilumina o braço
                 chordFretboardEl.querySelectorAll('.fret-button').forEach(btn => {
                     const noteIndex = parseInt(btn.dataset.noteIndex);
+                    const isOpenString = btn.dataset.fret === '0';
+                    btn.classList.remove('open-muted');
                     
                     if (chordNoteIndices.includes(noteIndex)) {
                         btn.textContent = btn.dataset.noteName;
@@ -1289,12 +1304,71 @@ body {
                         } else {
                             btn.classList.add('scale-note'); // Reutiliza o estilo da nota
                         }
+                    } else if (isOpenString) {
+                        btn.textContent = btn.dataset.noteName;
+                        btn.classList.add('open-muted');
                     }
                 });
             }
 
+            const transposeDownBtn = document.getElementById('transpose-down-btn');
+            const transposeUpBtn = document.getElementById('transpose-up-btn');
+
+            function transposeChordFretboard(delta) {
+                if (isBuilderMode) {
+                    const currentRootIdx = NOTES.indexOf(builderRootEl.value);
+                    const nextRootIdx = (currentRootIdx + delta + 12) % 12;
+                    builderRootEl.value = NOTES[nextRootIdx];
+                    buildChord();
+                    return;
+                }
+
+                if (selectedNotes.length === 0) return;
+
+                // Ensure all selected notes stay within [0, NUM_FRETS] when shifted
+                const canShiftAll = selectedNotes.every(n => {
+                    const nextFret = n.fret + delta;
+                    return nextFret >= 0 && nextFret <= NUM_FRETS;
+                });
+
+                if (!canShiftAll) return;
+
+                const previousNotes = [...selectedNotes];
+                // Clear current visual selection
+                previousNotes.forEach(note => {
+                    note.button.classList.remove('selected');
+                    note.button.textContent = (note.fret === 0) ? note.noteName : '';
+                });
+                selectedNotes = [];
+
+                // Apply shifted notes on the same strings
+                previousNotes.forEach(note => {
+                    const targetFret = note.fret + delta;
+                    const targetBtn = chordFretboardEl.querySelector(
+                        `.fret-button[data-string="${note.string}"][data-fret="${targetFret}"]`
+                    );
+                    if (targetBtn) {
+                        const newNoteName = targetBtn.dataset.noteName;
+                        const newNoteIndex = parseInt(targetBtn.dataset.noteIndex);
+                        selectedNotes.push({
+                            button: targetBtn,
+                            noteName: newNoteName,
+                            noteIndex: newNoteIndex,
+                            string: note.string,
+                            fret: targetFret
+                        });
+                        targetBtn.classList.add('selected');
+                        targetBtn.textContent = newNoteName;
+                    }
+                });
+
+                identifyChord();
+            }
+
             clearBtn.addEventListener('click', () => clearFretboard(true));
             showChordBtn.addEventListener('click', buildChord);
+            transposeDownBtn.addEventListener('click', () => transposeChordFretboard(-1));
+            transposeUpBtn.addEventListener('click', () => transposeChordFretboard(1));
 
             // ===================================
             // ABA 2: LÓGICA DAS ESCALAS
