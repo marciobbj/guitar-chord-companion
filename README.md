@@ -8,8 +8,6 @@
 
 O projeto pode ser executado tanto como um **aplicativo desktop nativo** (via **Tauri v2 / Rust**) quanto diretamente no navegador através do arquivo único autossuficiente (`chord_identifier.html`).
 
-![Screen Shot](imgs/screenshot_1.png "Screen Shot")
-
 ---
 
 ## Funcionalidades
