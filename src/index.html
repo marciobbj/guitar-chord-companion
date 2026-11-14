@@ -40,15 +40,18 @@
     <div class="max-w-7xl mx-auto">
         
         <!-- Tab Navigation -->
-        <div class="grid grid-cols-3 gap-2 md:gap-4 mb-4">
-            <button class="tab-button active text-xs sm:text-base md:text-2xl font-black py-3 px-2 sm:p-4 md:p-6 bg-white border-4 border-black neo-shadow-sm truncate" data-tab="chord-id">
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 md:gap-4 mb-4">
+            <button class="tab-button active text-xs sm:text-sm md:text-xl lg:text-2xl font-black py-3 px-2 sm:p-4 md:p-5 bg-white border-4 border-black neo-shadow-sm truncate" data-tab="chord-id">
                 CHORD ID
             </button>
-            <button class="tab-button text-xs sm:text-base md:text-2xl font-black py-3 px-2 sm:p-4 md:p-6 bg-white border-4 border-black neo-shadow-sm truncate" data-tab="scales">
+            <button class="tab-button text-xs sm:text-sm md:text-xl lg:text-2xl font-black py-3 px-2 sm:p-4 md:p-5 bg-white border-4 border-black neo-shadow-sm truncate" data-tab="scales">
                 SCALES
             </button>
-            <button class="tab-button text-xs sm:text-base md:text-2xl font-black py-3 px-2 sm:p-4 md:p-6 bg-white border-4 border-black neo-shadow-sm truncate" data-tab="harmony">
+            <button class="tab-button text-xs sm:text-sm md:text-xl lg:text-2xl font-black py-3 px-2 sm:p-4 md:p-5 bg-white border-4 border-black neo-shadow-sm truncate" data-tab="harmony">
                 HARMONY
+            </button>
+            <button class="tab-button text-xs sm:text-sm md:text-xl lg:text-2xl font-black py-3 px-2 sm:p-4 md:p-5 bg-white border-4 border-black neo-shadow-sm truncate" data-tab="inversions">
+                INVERSIONS
             </button>
         </div>
 
@@ -263,22 +266,165 @@
             <!-- Inversion Help Section -->
             <div class="max-w-4xl mx-auto mb-6">
                 <div class="bg-white border-4 border-black neo-shadow p-4 sm:p-6 md:p-8">
-                    <h3 class="text-xl md:text-2xl font-black text-blue-500 mb-3 md:mb-4">COMO LER O BRAÇO (INVERSÕES)</h3>
+                    <h3 class="text-xl md:text-2xl font-black text-blue-500 mb-3 md:mb-4">HOW TO READ THE FRETBOARD (INVERSIONS)</h3>
                     <p class="text-gray-700 text-sm sm:text-base md:text-lg mb-3">
-                        Quando você seleciona um acorde (ex: "V7"), o braço da guitarra acima mostra **todas as notas** desse acorde em **todo o braço**.
+                        When you select a chord (e.g. "V7"), the fretboard above displays <strong>all notes</strong> of that chord across the <strong>entire fretboard</strong>.
                     </p>
                     <p class="text-gray-700 text-sm sm:text-base md:text-lg mb-3">
-                        Na coluna **OPEN** (corda solta), as cordas sempre mantêm sua afinação visível (ex: `E · R` ou `A · 5`) e ficam destacadas em azul (Tônica) ou amarelo (Nota do acorde) quando fazem parte do acorde selecionado.
+                        In the <strong>OPEN</strong> column (open strings), strings always keep their tuning visible (e.g. `E · R` or `A · 5`) and are highlighted in blue (Root) or yellow (Chord Tone) when they belong to the selected chord.
                     </p>
                     <p class="text-gray-700 text-sm sm:text-base md:text-lg font-bold mb-3">
-                        Uma inversão é simplesmente o mesmo acorde, mas com uma nota que não é a Tônica (R) como a nota mais grave (o baixo).
+                        An inversion is simply the same chord played with a note other than the Root (R) as the lowest note (the bass).
                     </p>
                     <ul class="list-disc list-inside text-gray-700 text-sm sm:text-base md:text-lg space-y-2">
-                        <li><strong>Estado Fundamental:</strong> A nota mais grave é a Tônica (<strong>R</strong>).</li>
-                        <li><strong>1ª Inversão:</strong> A nota mais grave é a Terça (<strong>3</strong> ou <strong>b3</strong>).</li>
-                        <li><strong>2ª Inversão:</strong> A nota mais grave é a Quinta (<strong>5</strong> ou <strong>b5</strong>).</li>
-                        <li><strong>3ª Inversão:</strong> A nota mais grave é a Sétima (<strong>7</strong> ou <strong>b7</strong>).</li>
+                        <li><strong>Root Position:</strong> The lowest note is the Root (<strong>R</strong>).</li>
+                        <li><strong>1st Inversion:</strong> The lowest note is the Third (<strong>3</strong> or <strong>b3</strong>).</li>
+                        <li><strong>2nd Inversion:</strong> The lowest note is the Fifth (<strong>5</strong> or <strong>b5</strong>).</li>
+                        <li><strong>3rd Inversion:</strong> The lowest note is the Seventh (<strong>7</strong> or <strong>b7</strong>).</li>
                     </ul>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ======================= -->
+        <!-- TAB 4: INVERSIONS       -->
+        <!-- ======================= -->
+        <div id="panel-inversions" class="tab-panel hidden">
+
+            <!-- Inversions Control Panel -->
+            <div class="max-w-4xl mx-auto bg-white border-4 border-black neo-shadow p-4 sm:p-6 md:p-8 mb-6">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4 mb-6">
+                    <div>
+                        <label for="inv-root" class="block text-xs sm:text-sm font-bold text-gray-700 mb-1">ROOT NOTE</label>
+                        <select id="inv-root" class="w-full p-2.5 sm:p-3 text-sm sm:text-base font-bold bg-zinc-200 border-4 border-black neo-shadow-inset-sm">
+                            <option>C</option>
+                            <option>C#</option>
+                            <option>D</option>
+                            <option>D#</option>
+                            <option>E</option>
+                            <option>F</option>
+                            <option>F#</option>
+                            <option>G</option>
+                            <option>G#</option>
+                            <option>A</option>
+                            <option>A#</option>
+                            <option>B</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="inv-type" class="block text-xs sm:text-sm font-bold text-gray-700 mb-1">CHORD QUALITY</label>
+                        <select id="inv-type" class="w-full p-2.5 sm:p-3 text-sm sm:text-base font-bold bg-zinc-200 border-4 border-black neo-shadow-inset-sm">
+                            <option value="0,4,7|">Major Triad</option>
+                            <option value="0,3,7|m">Minor Triad (m)</option>
+                            <option value="0,3,6|dim">Diminished Triad (dim)</option>
+                            <option value="0,4,8|aug">Augmented Triad (aug)</option>
+                            <option value="0,5,7|sus4">Suspended 4th (sus4)</option>
+                            <option value="0,2,7|sus2">Suspended 2nd (sus2)</option>
+                            <option value="0,4,7,11|maj7" selected>Major 7 (maj7)</option>
+                            <option value="0,4,7,10|7">Dominant 7 (7)</option>
+                            <option value="0,3,7,10|m7">Minor 7 (m7)</option>
+                            <option value="0,3,6,10|m7(b5)">Half-Diminished (m7b5)</option>
+                            <option value="0,3,6,9|dim7">Diminished 7 (dim7)</option>
+                            <option value="0,3,7,11|m(maj7)">Minor Major 7 (mMaj7)</option>
+                            <option value="0,4,7,9|6">Major 6 (6)</option>
+                            <option value="0,3,7,9|m6">Minor 6 (m6)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Step 1: Inversion Navigator (Slash Chord: e.g. Cmaj7/C -> Cmaj7/E -> Cmaj7/G -> Cmaj7/B) -->
+                <div class="border-t-4 border-black pt-5 mb-5">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs sm:text-sm font-black text-gray-600 uppercase tracking-wider">1. INVERSION (BASS NOTE)</span>
+                        <span id="inv-step-counter" class="text-xs sm:text-sm font-black px-2 py-0.5 bg-yellow-300 border-2 border-black">1 / 4</span>
+                    </div>
+
+                    <div class="flex items-center justify-between gap-2 sm:gap-4 bg-zinc-100 border-4 border-black p-3 sm:p-4">
+                        <button id="inv-prev-btn" class="px-3 sm:px-5 py-2.5 sm:py-3 bg-white border-4 border-black font-black text-sm sm:text-base neo-shadow-sm hover:bg-yellow-300 active:translate-x-0.5 active:translate-y-0.5 transition-all">
+                            ◀ PREV
+                        </button>
+
+                        <div class="text-center flex-1 min-w-0">
+                            <div id="inv-slash-name" class="text-2xl sm:text-4xl md:text-5xl font-black text-blue-600 truncate">Cmaj7 / C</div>
+                            <div id="inv-degree-label" class="text-xs sm:text-base font-black text-gray-800 mt-1">Root Position — Bass on C (R)</div>
+                        </div>
+
+                        <button id="inv-next-btn" class="px-3 sm:px-5 py-2.5 sm:py-3 bg-white border-4 border-black font-black text-sm sm:text-base neo-shadow-sm hover:bg-yellow-300 active:translate-x-0.5 active:translate-y-0.5 transition-all">
+                            NEXT ▶
+                        </button>
+                    </div>
+
+                    <!-- Quick Inversion Pills -->
+                    <div id="inv-pills-container" class="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-3">
+                        <!-- Generated via JS -->
+                    </div>
+                </div>
+
+                <!-- Step 2: String Set / Shape Navigator (One position at a time across strings) -->
+                <div class="border-t-4 border-black pt-5">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+                        <div>
+                            <span class="text-xs sm:text-sm font-black text-gray-600 uppercase tracking-wider">2. STRING SET POSITION (ONE AT A TIME)</span>
+                            <p id="inv-shape-subtitle" class="text-xs sm:text-sm font-bold text-gray-700">Step through playable shapes for this inversion across each string group</p>
+                        </div>
+                        <div class="flex items-center space-x-2 self-center sm:self-auto">
+                            <button id="inv-label-notes" class="px-3 py-1.5 text-xs font-black border-2 border-black bg-blue-400 text-black neo-shadow-sm">
+                                NOTES + ROLE
+                            </button>
+                            <button id="inv-label-intervals" class="px-3 py-1.5 text-xs font-black border-2 border-black bg-zinc-200 text-black neo-shadow-sm">
+                                INTERVALS ONLY
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between gap-2 sm:gap-4 bg-zinc-100 border-4 border-black p-3 sm:p-4">
+                        <button id="inv-shape-prev-btn" class="px-3 sm:px-4 py-2 bg-white border-4 border-black font-black text-xs sm:text-sm neo-shadow-sm hover:bg-green-300 active:translate-x-0.5 active:translate-y-0.5 transition-all">
+                            ◀ PREV STRING
+                        </button>
+
+                        <div class="text-center flex-1 min-w-0">
+                            <div id="inv-shape-title" class="text-base sm:text-xl md:text-2xl font-black text-black">Bass on 6th String (Strings 6-5-4-3)</div>
+                            <div id="inv-shape-frets" class="text-xs sm:text-sm font-bold text-gray-700 mt-0.5">Frets: 8 - 9 - 9 - 9</div>
+                        </div>
+
+                        <button id="inv-shape-next-btn" class="px-3 sm:px-4 py-2 bg-white border-4 border-black font-black text-xs sm:text-sm neo-shadow-sm hover:bg-green-300 active:translate-x-0.5 active:translate-y-0.5 transition-all">
+                            NEXT STRING ▶
+                        </button>
+                    </div>
+
+                    <!-- Quick String Set Pills -->
+                    <div id="inv-shape-pills" class="flex flex-wrap gap-2 mt-3">
+                        <!-- Generated via JS -->
+                    </div>
+                </div>
+
+                <!-- Color Legend -->
+                <div class="flex flex-wrap items-center justify-center gap-4 mt-5 pt-4 border-t-2 border-zinc-300 text-xs sm:text-sm font-bold">
+                    <div class="flex items-center space-x-2">
+                        <span class="inline-block w-4 h-4 rounded-full bg-green-500 border-2 border-black"></span>
+                        <span>Inversion Bass Note (Lowest Note)</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span class="inline-block w-4 h-4 rounded-full bg-blue-500 border-2 border-black"></span>
+                        <span>Chord Root (R)</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span class="inline-block w-4 h-4 rounded-full bg-yellow-300 border-2 border-black"></span>
+                        <span>Other Chord Tones</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fretboard Container -->
+            <div class="bg-white border-4 border-black neo-shadow overflow-hidden mb-6">
+                <div id="fretboard-wrapper-inversions" class="overflow-x-auto pb-8">
+                    <div id="fretboard-container-inversions" class="pt-4">
+                        <!-- Fretboard será gerado aqui -->
+                    </div>
+                    <div id="fret-numbers-container-inversions">
+                        <!-- Números dos trastes serão gerados aqui -->
+                    </div>
                 </div>
             </div>
 
@@ -562,6 +708,7 @@
             const panels = document.querySelectorAll('.tab-panel');
             const panelScales = document.getElementById('panel-scales');
             const panelHarmony = document.getElementById('panel-harmony');
+            const panelInversions = document.getElementById('panel-inversions');
             
             tabs.forEach((tab, index) => {
                 tab.addEventListener('click', () => {
@@ -578,6 +725,8 @@
                         drawScale(); // Desenha a escala ao abrir a aba
                     } else if (panels[index] === panelHarmony) {
                         drawHarmony(); // Desenha o campo harmônico ao abrir a aba
+                    } else if (panels[index] === panelInversions) {
+                        updateInversionsView(); // Atualiza as inversões ao abrir a aba
                     }
                 });
             });
@@ -1072,17 +1221,408 @@
             harmonyTypeEl.addEventListener('change', drawHarmony);
 
             // ===================================
+            // ABA 4: LÓGICA DAS INVERSÕES (PASSO A PASSO)
+            // ===================================
+
+            const invRootEl = document.getElementById('inv-root');
+            const invTypeEl = document.getElementById('inv-type');
+            const invStepCounterEl = document.getElementById('inv-step-counter');
+            const invSlashNameEl = document.getElementById('inv-slash-name');
+            const invDegreeLabelEl = document.getElementById('inv-degree-label');
+            const invPrevBtn = document.getElementById('inv-prev-btn');
+            const invNextBtn = document.getElementById('inv-next-btn');
+            const invPillsContainer = document.getElementById('inv-pills-container');
+
+            const invShapeTitleEl = document.getElementById('inv-shape-title');
+            const invShapeFretsEl = document.getElementById('inv-shape-frets');
+            const invShapePrevBtn = document.getElementById('inv-shape-prev-btn');
+            const invShapeNextBtn = document.getElementById('inv-shape-next-btn');
+            const invShapePillsEl = document.getElementById('inv-shape-pills');
+            const invLabelNotesBtn = document.getElementById('inv-label-notes');
+            const invLabelIntervalsBtn = document.getElementById('inv-label-intervals');
+
+            const invFretboardEl = document.getElementById('fretboard-container-inversions');
+            const invNumbersEl = document.getElementById('fret-numbers-container-inversions');
+            const invWrapperEl = document.getElementById('fretboard-wrapper-inversions');
+
+            // Semitons absolutos das 6 cordas soltas para cálculo real de altura (pitch)
+            // 6ª=E2(0), 5ª=A2(5), 4ª=D3(10), 3ª=G3(15), 2ª=B3(19), 1ª=E4(24)
+            const STRING_BASE_PITCH = [0, 5, 10, 15, 19, 24];
+
+            const INVERSION_NAMES = [
+                'Root Position',
+                '1st Inversion',
+                '2nd Inversion',
+                '3rd Inversion'
+            ];
+
+            const ORDINAL_INV = ['Root', '1st Inv', '2nd Inv', '3rd Inv'];
+            const STRING_ORDINALS = ['6th', '5th', '4th', '3rd', '2nd', '1st'];
+
+            let currentInversionIndex = 0; // 0 = Root, 1 = 1st Inv, 2 = 2nd Inv, 3 = 3rd Inv
+            let currentShapeIndex = 0;     // Current string set / position index for active inversion
+            let currentShapesList = [];    // Calculated voicings for active inversion
+            let invLabelMode = 'notes';    // 'notes' | 'intervals'
+
+            function getFretForNoteNear(stringIdx, targetNoteIdx, refFret) {
+                const openNote = TUNING[stringIdx];
+                const baseFret = (targetNoteIdx - openNote + 12) % 12;
+                const candidates = [baseFret];
+                if (baseFret + 12 <= NUM_FRETS) {
+                    candidates.push(baseFret + 12);
+                }
+                let best = candidates[0];
+                let bestDist = Math.abs(best - refFret);
+                for (const c of candidates) {
+                    const dist = Math.abs(c - refFret);
+                    if (dist < bestDist) {
+                        best = c;
+                        bestDist = dist;
+                    }
+                }
+                return best;
+            }
+
+            // Generates ergonomic voicings (one per string set / region) for a specific inversion
+            function generateVoicingsForInversion(rootIndex, intervals, invIndex) {
+                const numVoices = intervals.length; // 3 (triad) or 4 (seventh chord)
+                const bassInterval = intervals[invIndex];
+                const bassNoteIndex = (rootIndex + bassInterval) % 12;
+
+                // Closed order of intervals starting from the bass (e.g. [4, 7, 11, 0] for 1st inversion)
+                const rotatedIntervals = [];
+                for (let i = 0; i < numVoices; i++) {
+                    rotatedIntervals.push(intervals[(invIndex + i) % numVoices]);
+                }
+
+                // Adjacent string sets (0=6th string ... 5=1st string)
+                const stringSets = (numVoices === 3)
+                    ? [
+                        { strings: [0, 1, 2], label: 'Strings 6 - 5 - 4', bassLabel: 'Bass on 6th String (E)' },
+                        { strings: [1, 2, 3], label: 'Strings 5 - 4 - 3', bassLabel: 'Bass on 5th String (A)' },
+                        { strings: [2, 3, 4], label: 'Strings 4 - 3 - 2', bassLabel: 'Bass on 4th String (D)' },
+                        { strings: [3, 4, 5], label: 'Strings 3 - 2 - 1', bassLabel: 'Bass on 3rd String (G)' }
+                    ]
+                    : [
+                        { strings: [0, 1, 2, 3], label: 'Strings 6 - 5 - 4 - 3', bassLabel: 'Bass on 6th String (E)' },
+                        { strings: [1, 2, 3, 4], label: 'Strings 5 - 4 - 3 - 2', bassLabel: 'Bass on 5th String (A)' },
+                        { strings: [2, 3, 4, 5], label: 'Strings 4 - 3 - 2 - 1', bassLabel: 'Bass on 4th String (D)' },
+                        // Drop-3 with bass on 6th string (skips 5th string)
+                        { strings: [0, 2, 3, 4], label: 'Strings 6 - 4 - 3 - 2 (Drop 3)', bassLabel: 'Bass on 6th String (Drop 3)' }
+                    ];
+
+                // Permutations of upper voices (always keeping the bass note on the lowest string of the set)
+                const upperIntervals = rotatedIntervals.slice(1);
+                function permute(arr) {
+                    if (arr.length <= 1) return [arr];
+                    const result = [];
+                    for (let i = 0; i < arr.length; i++) {
+                        const rest = permute([...arr.slice(0, i), ...arr.slice(i + 1)]);
+                        for (const r of rest) {
+                            result.push([arr[i], ...r]);
+                        }
+                    }
+                    return result;
+                }
+                const upperPermutations = permute(upperIntervals);
+
+                const shapes = [];
+
+                stringSets.forEach(set => {
+                    const bassString = set.strings[0];
+                    const openNote = TUNING[bassString];
+                    const firstBassFret = (bassNoteIndex - openNote + 12) % 12;
+                    const bassFrets = [firstBassFret];
+                    if (firstBassFret > 0 && firstBassFret + 12 <= 15) {
+                        bassFrets.push(firstBassFret + 12);
+                    } else if (firstBassFret === 0) {
+                        bassFrets.push(12);
+                    }
+
+                    bassFrets.forEach(bassFret => {
+                        const bassPitch = STRING_BASE_PITCH[bassString] + bassFret;
+                        let bestCandidate = null;
+                        let bestScore = Infinity;
+
+                        upperPermutations.forEach((perm, permIdx) => {
+                            const notes = [{
+                                string: bassString,
+                                fret: bassFret,
+                                noteIndex: bassNoteIndex,
+                                interval: bassInterval,
+                                pitch: bassPitch,
+                                isBass: true
+                            }];
+
+                            let valid = true;
+                            for (let s = 1; s < set.strings.length; s++) {
+                                const strIdx = set.strings[s];
+                                const targetInterval = perm[s - 1];
+                                const targetNoteIdx = (rootIndex + targetInterval) % 12;
+                                const fret = getFretForNoteNear(strIdx, targetNoteIdx, bassFret);
+                                const pitch = STRING_BASE_PITCH[strIdx] + fret;
+
+                                // Ensure the bass note is genuinely the lowest pitch
+                                if (pitch <= bassPitch) {
+                                    // Try one octave higher if it fits on the fretboard
+                                    if (fret + 12 <= NUM_FRETS && STRING_BASE_PITCH[strIdx] + fret + 12 > bassPitch) {
+                                        notes.push({
+                                            string: strIdx,
+                                            fret: fret + 12,
+                                            noteIndex: targetNoteIdx,
+                                            interval: targetInterval,
+                                            pitch: STRING_BASE_PITCH[strIdx] + fret + 12,
+                                            isBass: false
+                                        });
+                                    } else {
+                                        valid = false;
+                                        break;
+                                    }
+                                } else {
+                                    notes.push({
+                                        string: strIdx,
+                                        fret: fret,
+                                        noteIndex: targetNoteIdx,
+                                        interval: targetInterval,
+                                        pitch: pitch,
+                                        isBass: false
+                                    });
+                                }
+                            }
+
+                            if (!valid) return;
+
+                            const frettedOnly = notes.map(n => n.fret).filter(f => f > 0);
+                            const maxFret = frettedOnly.length ? Math.max(...frettedOnly) : 0;
+                            const minFret = frettedOnly.length ? Math.min(...frettedOnly) : 0;
+                            const span = maxFret - minFret;
+
+                            // Penalize wide stretches (> 4 frets) or pitch crossings between strings
+                            let pitchOrderPenalty = 0;
+                            for (let k = 1; k < notes.length; k++) {
+                                if (notes[k].pitch < notes[k - 1].pitch) {
+                                    pitchOrderPenalty += 8;
+                                }
+                            }
+
+                            // Prefer compact shapes and closed voice order (permIdx === 0)
+                            const score = span * 3 + pitchOrderPenalty + (permIdx === 0 ? 0 : 1.5);
+                            if (span <= 5 && score < bestScore) {
+                                bestScore = score;
+                                bestCandidate = notes;
+                            }
+                        });
+
+                        if (bestCandidate) {
+                            const minFretAll = Math.min(...bestCandidate.map(n => n.fret));
+                            const maxFretAll = Math.max(...bestCandidate.map(n => n.fret));
+                            shapes.push({
+                                title: `${set.bassLabel} — ${set.label}`,
+                                shortLabel: `${set.label} (Fret ${bassFret})`,
+                                bassString: bassString,
+                                bassFret: bassFret,
+                                minFret: minFretAll,
+                                maxFret: maxFretAll,
+                                notes: bestCandidate
+                            });
+                        }
+                    });
+                });
+
+                // Sort from lowest string (6th) to highest, then by lowest fret
+                shapes.sort((a, b) => (a.bassString - b.bassString) || (a.bassFret - b.bassFret));
+                return shapes;
+            }
+
+            function parseInvType() {
+                const [intervalPart, symbol] = invTypeEl.value.split('|');
+                const intervals = intervalPart.split(',').map(Number);
+                return { intervals, symbol: symbol || '' };
+            }
+
+            function updateInversionsView(resetShapeIndex = true) {
+                const rootName = invRootEl.value;
+                const rootIndex = NOTES.indexOf(rootName);
+                const { intervals, symbol } = parseInvType();
+                const numInversions = intervals.length;
+
+                if (currentInversionIndex >= numInversions) {
+                    currentInversionIndex = 0;
+                }
+
+                const bassInterval = intervals[currentInversionIndex];
+                const bassNoteIndex = (rootIndex + bassInterval) % 12;
+                const bassNoteName = NOTES[bassNoteIndex];
+                const bassIntervalName = INTERVAL_NAMES[bassInterval];
+
+                // Main slash chord display (e.g. Cmaj7 / C, Cmaj7 / E, Cmaj7 / G, Cmaj7 / B)
+                const chordBaseName = `${rootName}${symbol}`;
+                const slashDisplay = `${chordBaseName} / ${bassNoteName}`;
+
+                invSlashNameEl.textContent = slashDisplay;
+                invStepCounterEl.textContent = `${currentInversionIndex + 1} / ${numInversions}`;
+                invDegreeLabelEl.textContent = `${INVERSION_NAMES[currentInversionIndex] || `${currentInversionIndex}th Inversion`} — Bass on ${bassNoteName} (${bassIntervalName})`;
+
+                // Render quick pills for all inversions of the selected chord
+                invPillsContainer.innerHTML = '';
+                intervals.forEach((intv, idx) => {
+                    const noteName = NOTES[(rootIndex + intv) % 12];
+                    const intvLabel = INTERVAL_NAMES[intv];
+                    const btn = document.createElement('button');
+                    const isActive = idx === currentInversionIndex;
+                    btn.className = `p-2 sm:p-2.5 border-4 border-black font-black text-xs sm:text-sm transition-all ${
+                        isActive ? 'bg-blue-500 text-white neo-shadow-sm' : 'bg-white text-black hover:bg-zinc-100'
+                    }`;
+                    btn.innerHTML = `
+                        <div>${chordBaseName}/${noteName}</div>
+                        <div class="text-[10px] sm:text-xs font-bold ${isActive ? 'text-yellow-200' : 'text-gray-500'}">
+                            ${ORDINAL_INV[idx] || `${idx}th Inv`} (${intvLabel})
+                        </div>
+                    `;
+                    btn.addEventListener('click', () => {
+                        currentInversionIndex = idx;
+                        updateInversionsView(true);
+                    });
+                    invPillsContainer.appendChild(btn);
+                });
+
+                // Generate individual playable shapes across each string group for the active inversion
+                currentShapesList = generateVoicingsForInversion(rootIndex, intervals, currentInversionIndex);
+                if (resetShapeIndex || currentShapeIndex >= currentShapesList.length) {
+                    currentShapeIndex = 0;
+                }
+
+                renderCurrentInversionShape(rootIndex);
+            }
+
+            function renderCurrentInversionShape(rootIndex) {
+                // Update string set pills
+                invShapePillsEl.innerHTML = '';
+                currentShapesList.forEach((shape, idx) => {
+                    const pill = document.createElement('button');
+                    const isActive = idx === currentShapeIndex;
+                    pill.className = `px-3 py-1.5 border-2 border-black font-black text-xs transition-all ${
+                        isActive ? 'bg-green-400 text-black neo-shadow-sm' : 'bg-white text-gray-700 hover:bg-zinc-100'
+                    }`;
+                    pill.textContent = `${idx + 1}. ${shape.shortLabel}`;
+                    pill.addEventListener('click', () => {
+                        currentShapeIndex = idx;
+                        renderCurrentInversionShape(rootIndex);
+                    });
+                    invShapePillsEl.appendChild(pill);
+                });
+
+                const activeShape = currentShapesList[currentShapeIndex];
+                if (!activeShape) return;
+
+                // Build per-string summary (from 6th to 1st string)
+                const activeNotesSummary = activeShape.notes
+                    .map(n => `${STRING_ORDINALS[n.string]} str: Fret ${n.fret} [${NOTES[n.noteIndex]} · ${INTERVAL_NAMES[n.interval]}]`)
+                    .join('  |  ');
+
+                invShapeTitleEl.textContent = `Position ${currentShapeIndex + 1}/${currentShapesList.length}: ${activeShape.title}`;
+                invShapeFretsEl.textContent = activeNotesSummary;
+
+                // Desenhar apenas o shape atual no braço
+                invFretboardEl.querySelectorAll('.fret-button').forEach(btn => {
+                    const strIdx = parseInt(btn.dataset.string);
+                    const fretIdx = parseInt(btn.dataset.fret);
+                    const noteName = btn.dataset.noteName;
+                    const isOpenString = fretIdx === 0;
+
+                    btn.classList.remove('inversion-bass', 'inversion-root', 'inversion-tone', 'open-muted');
+                    btn.textContent = '';
+
+                    const match = activeShape.notes.find(n => n.string === strIdx && n.fret === fretIdx);
+                    if (match) {
+                        const intvLabel = INTERVAL_NAMES[match.interval];
+                        btn.textContent = invLabelMode === 'notes'
+                            ? `${noteName}·${intvLabel}`
+                            : intvLabel;
+
+                        if (match.isBass) {
+                            btn.classList.add('inversion-bass');
+                        } else if (match.noteIndex === rootIndex) {
+                            btn.classList.add('inversion-root');
+                        } else {
+                            btn.classList.add('inversion-tone');
+                        }
+                    } else if (isOpenString) {
+                        btn.textContent = noteName;
+                        btn.classList.add('open-muted');
+                    }
+                });
+
+                // Centralizar suavemente a rolagem horizontal do braço na região do shape atual
+                if (invWrapperEl && activeShape.notes.length > 0) {
+                    const avgFret = activeShape.notes.reduce((acc, n) => acc + n.fret, 0) / activeShape.notes.length;
+                    const targetScroll = Math.max(0, (avgFret - 3) * 60);
+                    invWrapperEl.scrollTo({ left: targetScroll, behavior: 'smooth' });
+                }
+            }
+
+            invRootEl.addEventListener('change', () => {
+                currentInversionIndex = 0;
+                updateInversionsView(true);
+            });
+            invTypeEl.addEventListener('change', () => {
+                currentInversionIndex = 0;
+                updateInversionsView(true);
+            });
+
+            invPrevBtn.addEventListener('click', () => {
+                const { intervals } = parseInvType();
+                currentInversionIndex = (currentInversionIndex - 1 + intervals.length) % intervals.length;
+                updateInversionsView(true);
+            });
+            invNextBtn.addEventListener('click', () => {
+                const { intervals } = parseInvType();
+                currentInversionIndex = (currentInversionIndex + 1) % intervals.length;
+                updateInversionsView(true);
+            });
+
+            invShapePrevBtn.addEventListener('click', () => {
+                if (currentShapesList.length === 0) return;
+                currentShapeIndex = (currentShapeIndex - 1 + currentShapesList.length) % currentShapesList.length;
+                renderCurrentInversionShape(NOTES.indexOf(invRootEl.value));
+            });
+            invShapeNextBtn.addEventListener('click', () => {
+                if (currentShapesList.length === 0) return;
+                currentShapeIndex = (currentShapeIndex + 1) % currentShapesList.length;
+                renderCurrentInversionShape(NOTES.indexOf(invRootEl.value));
+            });
+
+            invLabelNotesBtn.addEventListener('click', () => {
+                invLabelMode = 'notes';
+                invLabelNotesBtn.classList.add('bg-blue-400');
+                invLabelNotesBtn.classList.remove('bg-zinc-200');
+                invLabelIntervalsBtn.classList.add('bg-zinc-200');
+                invLabelIntervalsBtn.classList.remove('bg-blue-400');
+                renderCurrentInversionShape(NOTES.indexOf(invRootEl.value));
+            });
+            invLabelIntervalsBtn.addEventListener('click', () => {
+                invLabelMode = 'intervals';
+                invLabelIntervalsBtn.classList.add('bg-blue-400');
+                invLabelIntervalsBtn.classList.remove('bg-zinc-200');
+                invLabelNotesBtn.classList.add('bg-zinc-200');
+                invLabelNotesBtn.classList.remove('bg-blue-400');
+                renderCurrentInversionShape(NOTES.indexOf(invRootEl.value));
+            });
+
+            // ===================================
             // INICIALIZAÇÃO
             // ===================================
             
-            // Criar os três braços
+            // Criar os quatro braços
             createFretboard(chordFretboardEl, chordNumbersEl, onFretClick);
             createFretboard(scaleFretboardEl, scaleNumbersEl, null); // Sem clique
             createFretboard(harmonyFretboardEl, harmonyNumbersEl, null); // Sem clique
+            createFretboard(invFretboardEl, invNumbersEl, null); // Sem clique
             
-            // Inicializar as abas Scales e Harmony
+            // Inicializar as abas Scales, Harmony e Inversions
             drawScale();
             drawHarmony();
+            updateInversionsView();
         });
     </script>
 </body>

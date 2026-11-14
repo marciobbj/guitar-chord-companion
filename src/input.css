@@ -114,6 +114,24 @@ body {
     color: #18181b; /* zinc-900 */
     border-color: #71717a; /* zinc-500 */
 }
+.fret-button.inversion-bass {
+    background-color: #22c55e; /* green-500 */
+    color: #000000;
+    border-color: #000;
+    transform: scale(1.1);
+}
+.fret-button.inversion-root {
+    background-color: #3b82f6; /* blue-500 */
+    color: #ffffff;
+    border-color: #000;
+    transform: scale(1.1);
+}
+.fret-button.inversion-tone {
+    background-color: #fde047; /* yellow-300 */
+    color: #000000;
+    border-color: #000;
+    transform: scale(1.08);
+}
 .fret-button[data-fret="0"] {
     width: 90%;
     border-radius: 8px;
@@ -133,14 +151,21 @@ body {
     border-color: #000;
 }
 .fret-button[data-fret="0"].scale-root,
-.fret-button[data-fret="0"].harmony-root {
+.fret-button[data-fret="0"].harmony-root,
+.fret-button[data-fret="0"].inversion-root {
     background-color: #3b82f6; /* blue-500 */
     color: #ffffff;
     border-color: #000;
 }
 .fret-button[data-fret="0"].scale-note,
-.fret-button[data-fret="0"].harmony-note {
+.fret-button[data-fret="0"].harmony-note,
+.fret-button[data-fret="0"].inversion-tone {
     background-color: #fde047; /* yellow-300 */
+    color: #000000;
+    border-color: #000;
+}
+.fret-button[data-fret="0"].inversion-bass {
+    background-color: #22c55e; /* green-500 */
     color: #000000;
     border-color: #000;
 }
