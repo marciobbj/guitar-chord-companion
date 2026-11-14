@@ -380,6 +380,36 @@
                     </div>
                 </div>
 
+                <!-- Fretboard Container (Positioned right below Root/Quality selectors for immediate visual feedback) -->
+                <div class="border-t-4 border-black pt-4 mb-5">
+                    <div class="bg-white border-4 border-black neo-shadow-sm overflow-hidden">
+                        <div id="fretboard-wrapper-inversions" class="overflow-x-auto pb-8">
+                            <div id="fretboard-container-inversions" class="pt-4">
+                                <!-- Fretboard será gerado aqui -->
+                            </div>
+                            <div id="fret-numbers-container-inversions">
+                                <!-- Números dos trastes serão gerados aqui -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Color Legend -->
+                    <div class="flex flex-wrap items-center justify-center gap-4 mt-3 text-xs sm:text-sm font-bold">
+                        <div class="flex items-center space-x-2">
+                            <span class="inline-block w-4 h-4 rounded-full bg-green-500 border-2 border-black"></span>
+                            <span>Inversion Bass Note (Lowest Note)</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="inline-block w-4 h-4 rounded-full bg-blue-500 border-2 border-black"></span>
+                            <span>Chord Root (R)</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="inline-block w-4 h-4 rounded-full bg-yellow-300 border-2 border-black"></span>
+                            <span>Other Chord Tones</span>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Step 1: Inversion Navigator (Slash Chord: e.g. Cmaj7/C -> Cmaj7/E -> Cmaj7/G -> Cmaj7/B) -->
                 <div class="border-t-4 border-black pt-5 mb-5">
                     <div class="flex items-center justify-between mb-2">
@@ -443,34 +473,6 @@
                     <!-- Quick String Set Pills -->
                     <div id="inv-shape-pills" class="flex flex-wrap gap-2 mt-3">
                         <!-- Generated via JS -->
-                    </div>
-                </div>
-
-                <!-- Color Legend -->
-                <div class="flex flex-wrap items-center justify-center gap-4 mt-5 pt-4 border-t-2 border-zinc-300 text-xs sm:text-sm font-bold">
-                    <div class="flex items-center space-x-2">
-                        <span class="inline-block w-4 h-4 rounded-full bg-green-500 border-2 border-black"></span>
-                        <span>Inversion Bass Note (Lowest Note)</span>
-                    </div>
-                    <div class="flex items-center space-x-2">
-                        <span class="inline-block w-4 h-4 rounded-full bg-blue-500 border-2 border-black"></span>
-                        <span>Chord Root (R)</span>
-                    </div>
-                    <div class="flex items-center space-x-2">
-                        <span class="inline-block w-4 h-4 rounded-full bg-yellow-300 border-2 border-black"></span>
-                        <span>Other Chord Tones</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Fretboard Container -->
-            <div class="bg-white border-4 border-black neo-shadow overflow-hidden mb-6">
-                <div id="fretboard-wrapper-inversions" class="overflow-x-auto pb-8">
-                    <div id="fretboard-container-inversions" class="pt-4">
-                        <!-- Fretboard será gerado aqui -->
-                    </div>
-                    <div id="fret-numbers-container-inversions">
-                        <!-- Números dos trastes serão gerados aqui -->
                     </div>
                 </div>
             </div>

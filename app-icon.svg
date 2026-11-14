@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- Neo-Brutalist Drop Shadow -->
+  <rect x="44" y="44" width="444" height="444" rx="84" fill="#000000" />
+
+  <!-- Main Neo-Brutalist Yellow Tile -->
+  <rect x="24" y="24" width="444" height="444" rx="84" fill="#FDE047" stroke="#000000" stroke-width="18" />
+
+  <!-- Inner White Fretboard Card Shadow -->
+  <rect x="108" y="82" width="296" height="348" rx="32" fill="#000000" />
+
+  <!-- Inner Fretboard Background -->
+  <rect x="96" y="70" width="296" height="348" rx="32" fill="#FFFFFF" stroke="#000000" stroke-width="14" />
+
+  <!-- Top Nut (Pestana) -->
+  <rect x="96" y="70" width="296" height="34" rx="16" fill="#18181B" stroke="#000000" stroke-width="12" />
+
+  <!-- Horizontal Fret Wires -->
+  <line x1="96" y1="164" x2="392" y2="164" stroke="#71717A" stroke-width="10" />
+  <line x1="96" y1="252" x2="392" y2="252" stroke="#71717A" stroke-width="10" />
+  <line x1="96" y1="340" x2="392" y2="340" stroke="#71717A" stroke-width="10" />
+
+  <!-- Fret Inlay Dot (Center) -->
+  <circle cx="244" cy="208" r="10" fill="#E4E4E7" />
+
+  <!-- 5 Guitar Strings (Vertical) -->
+  <line x1="140" y1="96" x2="140" y2="418" stroke="#18181B" stroke-width="10" stroke-linecap="round" />
+  <line x1="192" y1="96" x2="192" y2="418" stroke="#18181B" stroke-width="9" stroke-linecap="round" />
+  <line x1="244" y1="96" x2="244" y2="418" stroke="#18181B" stroke-width="8" stroke-linecap="round" />
+  <line x1="296" y1="96" x2="296" y2="418" stroke="#18181B" stroke-width="7" stroke-linecap="round" />
+  <line x1="348" y1="96" x2="348" y2="418" stroke="#18181B" stroke-width="6" stroke-linecap="round" />
+
+  <!-- Chord Note 1: Root Note (Blue) on 2nd String From Left, 3rd Fret -->
+  <circle cx="198" cy="302" r="30" fill="#000000" />
+  <circle cx="192" cy="296" r="30" fill="#3B82F6" stroke="#000000" stroke-width="10" />
+  <text x="192" y="307" font-family="sans-serif" font-weight="900" font-size="30" fill="#FFFFFF" text-anchor="middle">R</text>
+
+  <!-- Chord Note 2: Inversion Bass Note (Green) on 3rd String, 2nd Fret -->
+  <circle cx="250" cy="214" r="30" fill="#000000" />
+  <circle cx="244" cy="208" r="30" fill="#22C55E" stroke="#000000" stroke-width="10" />
+  <text x="244" y="219" font-family="sans-serif" font-weight="900" font-size="30" fill="#FFFFFF" text-anchor="middle">3</text>
+
+  <!-- Chord Note 3: 7th / Extension Note (Pink/Red) on 4th String, 1st Fret -->
+  <circle cx="302" cy="138" r="28" fill="#000000" />
+  <circle cx="296" cy="132" r="28" fill="#EC4899" stroke="#000000" stroke-width="10" />
+  <text x="296" y="143" font-family="sans-serif" font-weight="900" font-size="28" fill="#FFFFFF" text-anchor="middle">7</text>
+
+  <!-- Chord Note 4: 5th Note (Amber) on 5th String, 3rd Fret -->
+  <circle cx="354" cy="302" r="28" fill="#000000" />
+  <circle cx="348" cy="296" r="28" fill="#F59E0B" stroke="#000000" stroke-width="10" />
+  <text x="348" y="307" font-family="sans-serif" font-weight="900" font-size="28" fill="#000000" text-anchor="middle">5</text>
+</svg>
