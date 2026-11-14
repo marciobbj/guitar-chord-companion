@@ -934,23 +934,26 @@ body {
                 }
                 
                 const { noteName, noteIndex, string, fret } = button.dataset;
-                const existingNoteIndex = selectedNotes.findIndex(n => n.string === string);
+                const stringNum = parseInt(string);
+                const fretNum = parseInt(fret);
+                const wasSelected = button.classList.contains('selected');
+                const existingNoteIndex = selectedNotes.findIndex(n => n.string === stringNum);
 
                 // Desselecionar nota existente na mesma corda
                 if (existingNoteIndex > -1) {
                     const oldNote = selectedNotes.splice(existingNoteIndex, 1)[0];
                     oldNote.button.classList.remove('selected');
-                    oldNote.button.textContent = (oldNote.fret === '0') ? oldNote.noteName : '';
+                    oldNote.button.textContent = (oldNote.fret === 0) ? oldNote.noteName : '';
                 }
 
-                // Se o clique não foi na nota já selecionada, selecione-a
-                if (!button.classList.contains('selected')) {
+                // Se o clique não foi na nota já selecionada, selecione-a (toggle)
+                if (!wasSelected) {
                     selectedNotes.push({
                         button: button,
                         noteName: noteName,
                         noteIndex: parseInt(noteIndex),
-                        string: parseInt(string),
-                        fret: parseInt(fret)
+                        string: stringNum,
+                        fret: fretNum
                     });
                     button.classList.add('selected');
                     button.textContent = noteName;
