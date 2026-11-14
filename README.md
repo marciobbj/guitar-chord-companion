@@ -4,7 +4,7 @@
   <img src="src-tauri/icons/icon.png" alt="Guitar Chord Companion Icon" width="128" />
 </p>
 
-**Guitar Chord Companion** é uma ferramenta "tudo-em-um" de teoria musical e exploração de braço para guitarristas, construída com um visual **Neo-Brutalista** responsivo (desktop e mobile).
+**Guitar Chord Companion** é uma ferramenta "tudo-em-um" de teoria musical e exploração de braço para guitarristas para desktop e mobile.
 
 O projeto pode ser executado tanto como um **aplicativo desktop nativo** (via **Tauri v2 / Rust**) quanto diretamente no navegador através do arquivo único autossuficiente (`chord_identifier.html`).
 
