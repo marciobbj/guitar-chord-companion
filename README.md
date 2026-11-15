@@ -4,81 +4,84 @@
   <img src="src-tauri/icons/icon.png" alt="Guitar Chord Companion Icon" width="128" />
 </p>
 
-**Guitar Chord Companion** é uma ferramenta "tudo-em-um" de teoria musical e exploração de braço para guitarristas para desktop e mobile.
+**Guitar Chord Companion** is an all-in-one music theory and fretboard exploration tool for guitarists, designed with a responsive **Neo-Brutalist** interface for both desktop and mobile screens.
 
-O projeto pode ser executado tanto como um **aplicativo desktop nativo** (via **Tauri v2 / Rust**) quanto diretamente no navegador através do arquivo único autossuficiente (`chord_identifier.html`).
+The project can run either as a **native desktop application** (powered by **Tauri v2 / Rust**) or directly in any modern browser using the standalone single-file version (`chord_identifier.html`).
+
+![Screen Shot](imgs/screenshot_1.png "Screen Shot")
 
 ---
 
-## Funcionalidades
+## Features
 
-O aplicativo conta com um cabeçalho global com **Metrônomo** e **quatro abas principais** (`CHORD ID`, `SCALES`, `HARMONY` e `INVERSIONS`):
+The application features a persistent global header with a **Metronome** and **four main tabs** (`CHORD ID`, `SCALES`, `HARMONY`, and `INVERSIONS`):
 
-### 1. Metrônomo Global (Header)
-- **Controle de BPM Interativo:** Ajuste de `30` a `240 BPM` arrastando o *knob* circular (suporte a mouse e toque).
-- **Alta Precisão Rítmica:** Agendamento de *ticks* via **Web Audio API**, com acentuação sonora e visual no tempo `1` do compasso `4/4`.
-- **Layout Responsivo:** Adaptado tanto para telas desktop quanto para dispositivos móveis.
+### 1. Global Metronome (Header)
+- **Interactive BPM Knob:** Adjust tempo from `30` to `240 BPM` by dragging the circular knob (supports both mouse and touch input).
+- **High-Precision Audio Scheduling:** Uses the **Web Audio API** lookahead scheduler for rock-solid timing, featuring an accented audio click and visual blue pulse on beat `1` of a `4/4` bar.
+- **Responsive Header Layout:** Cleanly adapts to both desktop and mobile viewports.
 
-### 2. Aba `CHORD ID` (Identificador, Construtor e Transpositor de Acordes)
-- **Braço Interativo com Toggle:** Clique em qualquer casa ou corda solta para adicionar uma nota; clique novamente na mesma nota para removê-la individualmente (sem precisar limpar o braço inteiro).
-- **Transposição no Braço (`◀ -1 FRET` / `+1 FRET ▶`):** Desloque todo o formato/acorde atual para trás ou para frente no braço da guitarra em 1 semitom e veja instantaneamente qual novo acorde (ou inversão) as notas formam.
-- **Identificação Inteligente de Acordes:**
-  - Reconhece **díades** (Power Chords), **tríades**, **tétrades**, **acordes estendidos** (`9`, `11`, `13`, alterados) e **shell voicings**.
-  - **Detecção de Baixo e Inversões (*Slash Chords*):** Identifica automaticamente a nota mais grave considerando a altura real (*pitch*) das 6 cordas (ex.: `Cmaj7 / E`, `G Major / B`).
-- **Chord Builder (Construtor Reverso):** Escolha uma tônica e qualidade de acorde (ou clique em uma das interpretações detectadas) para visualizar todas as notas e intervalos daquele acorde mapeados pelo braço.
+### 2. `CHORD ID` Tab (Chord Identifier, Reverse Builder & Fretboard Transposer)
+- **Interactive Toggle Fretboard:** Click any fret or open string to place a note; click an active note again to remove it individually without clearing the entire fretboard.
+- **Fretboard Transposition (`◀ -1 FRET` / `+1 FRET ▶`):** Shift the entire chord shape up or down the neck by 1 semitone at a time and immediately see the newly generated chord name and notes.
+- **Smart Chord Detection:**
+  - Recognizes **dyads** (Power Chords), **triads**, **seventh chords**, **extended/altered chords** (`9`, `11`, `13`), and **shell voicings**.
+  - **Slash Chord & Inversion Detection:** Accurately determines the lowest-pitched note across all 6 strings to identify inversions (e.g., `Cmaj7 / E`, `G Major / B`).
+- **Reverse Chord Builder:** Pick any Root Note and Chord Quality (or click any detected chord interpretation) to map all of its notes and intervals across the fretboard.
 
-### 3. Aba `SCALES` (Visualizador de Escalas)
-- **Mapeamento Completo:** Selecione a nota fundamental (*Root Note*) e o tipo de escala (*Major*, *Minor Natural/Harmonic/Melodic*, *Pentatonics*, *Blues*, *Modes*).
-- **Destaque de Tônica:** Todas as tônicas da escala recebem destaque em azul (`scale-root`), facilitando a visualização de *shapes* e pontos de ancoragem em todas as regiões do braço.
+### 3. `SCALES` Tab (Scale Visualizer)
+- **Full-Neck Mapping:** Choose a **Root Note** and **Scale Type** (*Major*, *Natural/Harmonic/Melodic Minor*, *Pentatonics*, *Blues*, *Modes*).
+- **Root Highlighting:** Every root note is highlighted in blue (`scale-root`), making it easy to spot anchor points and scale patterns across all fretboard positions.
 
-### 4. Aba `HARMONY` (Campo Harmônico & Mapa Customizável de Inversões)
-Possui dois modos de visualização intercambiáveis:
+### 4. `HARMONY` Tab (Harmonic Fields & Custom Multi-Chord Inversion Map)
+Includes two switchable visualization modes:
 - **`CUSTOM HARMONY MAP (ALL CHORDS)`:**
-  - Visualize **todos os acordes de um campo harmônico (`I` a `vii`) simultaneamente no braço da guitarra**, cada grau com sua própria cor e etiqueta (`I:R`, `IV:3`, `V:5`, etc.).
-  - **Inversões Dinâmicas por Acorde:** Escolha individualmente qual inversão usar para cada grau da harmonia (`Root (/C)`, `1st Inv (/E)`, `2nd Inv (/G)`, `3rd Inv (/B)`) e em qual grupo de cordas/posição tocar.
-  - **Destaque de Notas em Comum (*Common Tones*):** Casas compartilhadas por mais de um acorde ativo são destacadas em dourado (ex.: `I+vi`, `ii+V`), revelando conexões harmônicas no braço.
-  - **Presets de Progressão & `AUTO VOICE-LEAD`:** Filtre rapidamente progressões clássicas (`ALL (I–vii)`, `I – IV – V`, `ii – V – I`, `I – vi – ii – V`) e use o botão **`AUTO VOICE-LEAD`** para que o app selecione automaticamente a inversão de cada acorde que permanece na mesma região do braço do grau `I`.
+  - View **all chords of a harmonic field (`I` through `vii`) simultaneously on the guitar fretboard**, each with its own color-coded degree badge (`I:R`, `IV:3`, `V:5`, etc.).
+  - **Per-Chord Dynamic Inversions:** Independently choose which inversion to use for each degree in the harmony list (`Root (/C)`, `1st Inv (/E)`, `2nd Inv (/G)`, `3rd Inv (/B)`) as well as its fretboard position/string group.
+  - **Common Tone Highlighting:** Fretboard positions shared by multiple active chords are highlighted in gold (e.g., `I+vi`, `ii+V`), making harmonic connections and shared notes immediately visible.
+  - **Progression Presets & `AUTO VOICE-LEAD`:** Quickly filter classic progressions (`ALL (I–vii)`, `I – IV – V`, `ii – V – I`, `I – vi – ii – V`) and click **`AUTO VOICE-LEAD`** to automatically select the inversion of each chord that stays closest to Degree `I`'s fret region.
 - **`SINGLE CHORD FULL NECK`:**
-  - Mapa clássico em todo o braço para um único grau selecionado do campo harmônico, alternando entre visualização de **Intervalos (`R, 3, 5, 7`)** e **Notas (`C, E, G, B`)**.
+  - Classic full-fretboard map for a single selected chord from the harmonic field, with a toggle between **Intervals (`R, 3, 5, 7`)** and **Note Names (`C, E, G, B`)**.
 
-### 5. Aba `INVERSIONS` (Explorador Passo a Passo de Inversões)
-- **Fretboard no Topo:** O braço da guitarra fica posicionado logo abaixo da seleção de tom e qualidade do acorde (`ROOT NOTE` e `CHORD QUALITY`) para acompanhamento visual imediato a cada mudança de tonalidade ou inversão.
-- **1. Navegação de Inversões (*Slash Chords*):** Avance ou retroceda pelas inversões uma de cada vez (`Cmaj7 / C` → `Cmaj7 / E` → `Cmaj7 / G` → `Cmaj7 / B`) com os botões `◀ PREV` / `NEXT ▶` ou pelos seletores rápidos.
-- **2. Navegação por Conjunto de Cordas (*String Sets*):** Veja um *shape* tocável de cada vez percorrendo os diferentes grupos de cordas (`Strings 6-5-4-3`, `Strings 5-4-3-2`, `Strings 4-3-2-1`, `Drop 3` ou sets de tríades), com rolagem automática do braço para a região do acorde e destaque diferenciado para a **Nota do Baixo** (verde), **Tônica** (azul) e **Demais Vozes** (amarelo).
-
----
-
-## Tecnologias Utilizadas
-
-- **Frontend:** HTML5, Tailwind CSS, Vanilla JavaScript e Web Audio API
-- **Desktop App:** [Tauri v2](https://v2.tauri.app/) (Rust + WebKitGTK)
+### 5. `INVERSIONS` Tab (Step-by-Step Inversion Explorer)
+- **Top-Anchored Fretboard:** Positioned right below the **ROOT NOTE** and **CHORD QUALITY** selectors so you can immediately see changes on the neck as you switch keys, qualities, or inversions.
+- **Pinned String Group (`📌 PINNED`):** Lock a specific string set once (e.g., `Strings 4-3-2-1`, `Strings 5-4-3-2`, `Strings 6-5-4-3`, or `Drop 3 (6-4-3-2)`) and step through all inversions (`Cmaj7 / C` → `Cmaj7 / E` → `Cmaj7 / G` → `Cmaj7 / B`) on that exact string group with a single click on **`NEXT INV ▶`** or **`◀ PREV INV`**.
+- **Color-Coded Voice Roles:** Clearly distinguishes the **Inversion Bass Note** (green), **Chord Root** (blue), and **Other Chord Tones** (yellow), while automatically scrolling the fretboard to center the active voicing.
 
 ---
 
-## Como Executar e Compilar
+## Tech Stack
 
-### Opção 1: Aplicativo Desktop (Tauri)
+- **Frontend:** HTML5, Tailwind CSS, Vanilla JavaScript, and Web Audio API
+- **Desktop Application:** [Tauri v2](https://v2.tauri.app/) (Rust + WebKitGTK)
+- **CI / CD:** GitHub Actions (`.github/workflows/release.yml`) for automated Linux, Windows, and macOS release builds
 
-Pré-requisitos: **Node.js**, **Rust / Cargo** e dependências do Tauri v2 para Linux (`webkit2gtk-4.1`, `librsvg`, etc.).
+---
+
+## Getting Started & Building
+
+### Option 1: Native Desktop App (Tauri)
+
+Prerequisites: **Node.js**, **Rust / Cargo**, and Tauri v2 system dependencies (such as `webkit2gtk-4.1` and `librsvg` on Linux).
 
 ```bash
-# Instalar dependências JS
+# Install JS dependencies
 npm install
 
-# Rodar em modo de desenvolvimento
+# Run in development mode
 npm run dev
 
-# Gerar build otimizada de produção (binário + pacotes .deb e .rpm)
+# Build optimized production binary and Linux packages (.deb & .rpm)
 npm run build
 ```
 
-O binário compilado ficará disponível em:
+The compiled release binary will be located at:
 ```bash
 ./src-tauri/target/release/guitar-chord-companion
 ```
 
-> **Nota para Linux / Wayland (Hyprland / Omarchy):** O binário já configura automaticamente `WEBKIT_DISABLE_DMABUF_RENDERER=1` na inicialização para evitar erros de protocolo Wayland com o WebKitGTK.
+> **Linux / Wayland Note (Hyprland / Omarchy):** The Rust binary automatically sets `WEBKIT_DISABLE_DMABUF_RENDERER=1` at startup on Linux to prevent Wayland protocol error 71 with WebKitGTK.
 
-### Opção 2: Versão Web Autossuficiente (Arquivo Único)
+### Option 2: Standalone Single-File Web Version
 
-Basta abrir o arquivo `chord_identifier.html` (ou `src/index.html` após rodar `npm run build:css`) diretamente em qualquer navegador moderno.
+Simply open `chord_identifier.html` (or `src/index.html` after running `npm run build:css`) directly in any modern web browser—no server required.
