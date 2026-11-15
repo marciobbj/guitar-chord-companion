@@ -1,6 +1,6 @@
 {
   "name": "guitar-chord-companion",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Guitar Chord Companion - All-in-one music theory tool for guitarists",
   "private": true,
   "scripts": {
