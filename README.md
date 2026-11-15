@@ -8,8 +8,6 @@
 
 The project can run either as a **native desktop application** (powered by **Tauri v2 / Rust**) or directly in any modern browser using the standalone single-file version (`chord_identifier.html`).
 
----
-
 ## Features
 
 The application features a persistent global header with a **Metronome** and **four main tabs** (`CHORD ID`, `SCALES`, `HARMONY`, and `INVERSIONS`):
