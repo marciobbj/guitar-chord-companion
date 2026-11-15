@@ -8,8 +8,6 @@
 
 The project can run either as a **native desktop application** (powered by **Tauri v2 / Rust**) or directly in any modern browser using the standalone single-file version (`chord_identifier.html`).
 
-![Screen Shot](imgs/screenshot_1.png "Screen Shot")
-
 ---
 
 ## Features
