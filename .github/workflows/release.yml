@@ -1,0 +1,108 @@
+name: Release Build
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: 'Release tag name (e.g. v1.0.0) when triggered manually'
+        required: false
+        default: 'v1.0.0'
+
+permissions:
+  contents: write
+
+jobs:
+  publish-tauri:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: 'ubuntu-22.04'
+            args: ''
+            os_label: 'linux-x86_64'
+          - platform: 'windows-latest'
+            args: ''
+            os_label: 'windows-x86_64'
+          - platform: 'macos-latest'
+            args: '--target aarch64-apple-darwin'
+            os_label: 'macos-arm64'
+          - platform: 'macos-latest'
+            args: '--target x86_64-apple-darwin'
+            os_label: 'macos-x64'
+
+    runs-on: ${{ matrix.platform }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Linux system dependencies (WebKitGTK & AppImage tools)
+        if: matrix.platform == 'ubuntu-22.04'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libwebkit2gtk-4.1-dev \
+            libappindicator3-dev \
+            librsvg2-dev \
+            patchelf \
+            file \
+            libssl-dev \
+            libgtk-3-dev \
+            libsoup-3.0-dev \
+            libjavascriptcoregtk-4.1-dev
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
+
+      - name: Rust cache
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: './src-tauri -> target'
+
+      - name: Install frontend dependencies
+        run: npm ci
+
+      - name: Build & Publish Tauri Bundles to GitHub Release
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: ${{ github.ref_type == 'tag' && github.ref_name || inputs.tag_name || 'v__VERSION__' }}
+          releaseName: 'Guitar Chord Companion v__VERSION__'
+          releaseBody: |
+            ## Guitar Chord Companion — Automated Release Build
+
+            ### Downloads Included:
+            - **Linux (`x86_64`):** `.deb`, `.rpm`, `.AppImage`, plus standalone `guitar-chord-companion-linux-x86_64` binary
+            - **Windows (`x86_64`):** `.msi` & `.exe` (NSIS) installers
+            - **macOS (`Apple Silicon` & `Intel`):** `.dmg` & `.app.tar.gz`
+            - **Standalone Web Version:** `chord_identifier.html` (single-file HTML that runs directly in any browser)
+          releaseDraft: false
+          prerelease: false
+          args: ${{ matrix.args }}
+
+      - name: Upload standalone Linux binary & single-file HTML to Release
+        if: matrix.platform == 'ubuntu-22.04'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG_NAME: ${{ github.ref_type == 'tag' && github.ref_name || inputs.tag_name || 'v1.0.0' }}
+        run: |
+          cp src-tauri/target/release/guitar-chord-companion guitar-chord-companion-linux-x86_64
+          chmod +x guitar-chord-companion-linux-x86_64
+          tar -czf guitar-chord-companion-linux-x86_64.tar.gz guitar-chord-companion-linux-x86_64
+          gh release upload "$TAG_NAME" \
+            guitar-chord-companion-linux-x86_64 \
+            guitar-chord-companion-linux-x86_64.tar.gz \
+            chord_identifier.html \
+            --clobber
